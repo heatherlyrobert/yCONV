@@ -44,7 +44,7 @@
 #define     P_FOCUS     "PS (programming support)"
 #define     P_NICHE     "st (string handling)"
 #define     P_SUBJECT   "human-readable number formats"
-#define     P_PURPOSE   "conversion of human-readable number formats"
+#define     P_PURPOSE   "conversion to-and-from human-consumable number formats"
 /*········· ··········· ´·····························´········································*/
 #define     P_NAMESAKE  "gnosis (intuitive-knowledge)"
 #define     P_PRONOUNCE "·"
@@ -83,8 +83,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "1.--, production"
 #define     P_VERMINOR  "1.0-, moving from ySTR"
-#define     P_VERNUM    "1.0a"
-#define     P_VERTXT    "successfully transferred ySTR_format units functions and unit-tested"
+#define     P_VERNUM    "1.0b"
+#define     P_VERTXT    "added many of my standard documentation fields in private header"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -93,6 +93,81 @@
 /*--------- 12345678901 ´123456789-123456789-123456789-123456789-123456789-123456789-123456789-*/
 /*                      ´·········1·········2·········3·········4·········5·········6·········7*/
 /*===[[ END ONE_LINERS ]]=====================================================*/
+
+
+/*´´·········1·········2·········3·········4·········5·········6·········7·········8  */
+#define  P_DISCLAIM    \
+   "i am a crazy, selfish, dog-fooding c-programmer. my code tends to be¦"         \
+   "experimental and constantly evolving. my point is NOT to be the best, it¦"     \
+   "is to challenge myself, build from scratch, and allow fast problem solving."
+
+/*´´·········1·········2·········3·········4·········5·········6·········7·········8  */
+#define  P_BOTHER      \
+   "all my applications had their own unique code to create various iterations¦"   \
+   "of human-consumable numbers; but, it was a ton of work with non-standard¦"     \
+   "results.  it was frustrating."
+
+/*´´·········1·········2·········3·········4·········5·········6·········7·········8  */
+#define  P_COVERS      \
+   "broadly, this library covers string-versions of human-consumable numbers¦"     \
+   "that i use on screens, in files, and within databases.  its job is to¦"        \
+   "quick understanding and direct maintenance of numbers.
+
+/*´´·········1·········2·········3·········4·········5·········6·········7·········8  */
+#define  P_SUBDISC     \
+   "-- definition of standard prefixes for common bases (using my shrike font)¦"   \
+   "-- creation and conversion of comma delimited integers up to ullong (19 sigs)¦"\
+   "-- creation and conversion of comma delimited floats up to double (15 sigs)¦"  \
+   "-- creation and conversion of various binary formats up to eight bytes¦"       \
+   "-- creation and conversion of various octal formats up to eight bytes¦"        \
+   "-- creation and conversion of various hexadecimal formats up to eight bytes¦"  \
+   "-- creation and conversion of various base64/mongo formats up to eight bytes¦" \
+   "-- creation and conversion of scientific notation formats up to double¦"       \
+   "-- creation and conversion of bit-level data as a human compatible format¦"    \
+   "-- conversion and representation in metric scales (yotta to yocto)¦"           \
+   "-- various conversions into short-hand reporting of numbers"
+
+/*´´·········1·········2·········3·········4·········5·········6·········7·········8  */
+#define  P_CURRENT     \
+   "i tried to use printf formats, atof, strtoull, etc for as long as i cound¦     \
+   "but the results required a lot of manual coding and some functions were¦"      \
+   "prickly at best.  i use these formats everywhere, they nned to be good."
+
+/*´´·········1·········2·········3·········4·········5·········6·········7·········8  */
+#define  P_VALUE       \
+   "i am targeted faster, more intuitive consumption of numbers, either in¦"       \
+   "clearer formats or rounded into accurate-enough represtentations or scales.¦"  \
+   "additionally, human editable data to cut down on stupid editing screens."
+
+/*´´·········1·········2·········3·········4·········5·········6·········7·········8  */
+#define  P_FEAR        \
+   "this could become a weakness if this library is not stable or only suits¦"     \
+   "the needs of a subset of my applications.  if i use separate code, its¦"       \
+   "messier, but the applications are not all subject to the danger."
+
+/*´´·········1·········2·········3·········4·········5·········6·········7·········8  */
+#define  P_MISSING     \
+   "their are not base, ansi-c methods for producing pretty, intuitive numbers,¦"  \
+   "but that is why c is fast and light.  so, every thing i am biulding here¦"     \
+   "is outside the scope of standard libraries (rightfully so)."
+
+/*´´·········1·········2·········3·········4·········5·········6·········7·········8  */
+#define  P_KEEPING     \
+   "this library will be built on stadard ansi-c, so i am keeping everything¦"     \
+   "just building on top of it."
+
+
+/*´´·········1·········2·········3·········4·········5·········6·········7·········8  */
+#define  P_PERK        \
+   "i love not using other people's libraries and code as it makes my build¦"      \
+   "skilss that all c-programmers should have.  also, i will not be dependent¦"    \
+   "on other's plans, desires, modivations, or timetables."
+
+/*´´·········1·········2·········3·········4·········5·········6·········7·········8  */
+#define  P_SCOPE       \
+   "focused entirely on converting to-and-from various human-consumable¦"          \
+   "formats for use in nearly everyone of my programs so that numbers are¦         \
+   "quick, intuitively formatted, and easy."
 
 
 
