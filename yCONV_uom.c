@@ -37,7 +37,7 @@
 
 
 static struct {
-   char        u_char;                    /* symbol of unit       */
+   char        u_uom;                     /* symbol of unit       */
    char        u_pow;                     /* power                */
    double      u_scale;                   /* multiplier           */
    char        u_name      [LEN_TERSE];   /* prefix               */
@@ -83,7 +83,7 @@ static struct {
 static void      o___SUPPORT_________________o (void) {;}
 
 char
-yconv__units            (char a_dir, char a_unit, double *b_value, char *r_pow, double *r_scale, char r_name [LEN_TERSE], char r_sci [LEN_SHORT], char r_english [LEN_LABEL])
+yconv__uoms             (char a_dir, char a_uom, double *b_value, char *r_pow, double *r_scale, char r_name [LEN_TERSE], char r_sci [LEN_SHORT], char r_english [LEN_LABEL])
 {
    /*---(locals)-----------+-----------+-*/
    int         i           =    0;
@@ -97,8 +97,8 @@ yconv__units            (char a_dir, char a_unit, double *b_value, char *r_pow, 
    /*---(units up)-----------------------*/
    for (i = 0; i < LEN_TITLE; ++i) {
       /*---(filter)----------------------*/
-      if (S_scale [i].u_char == 0)       break;
-      if (S_scale [i].u_char != a_unit)  continue;
+      if (S_scale [i].u_uom == 0)       break;
+      if (S_scale [i].u_uom != a_uom)  continue;
       /*---(handle)----------------------*/
       if (b_value   != NULL) {
          if (a_dir == '>')  *b_value /= S_scale [i].u_scale;
@@ -124,9 +124,9 @@ yconv__units            (char a_dir, char a_unit, double *b_value, char *r_pow, 
 /*====================------------------------------------====================*/
 static void      o___PUBLIC__________________o (void) {;}
 
-char yconv_units  (char a_unit, char *r_pow, double *r_scale, char r_name [LEN_TERSE], char r_sci [LEN_SHORT], char r_english [LEN_LABEL]) { return yconv__units ('.', a_unit, NULL, r_pow, r_scale, r_name, r_sci, r_english); }
-char yconv_2unit  (char a_unit, double *b_value)   { return yconv__units ('>', a_unit, b_value, NULL, NULL, NULL, NULL, NULL); }
-char yconv_4unit  (char a_unit, double *b_value)   { return yconv__units ('<', a_unit, b_value, NULL, NULL, NULL, NULL, NULL); }
+char yconv_uoms   (char a_uom, char *r_pow, double *r_scale, char r_name [LEN_TERSE], char r_sci [LEN_SHORT], char r_english [LEN_LABEL]) { return yconv__uoms ('.', a_uom, NULL, r_pow, r_scale, r_name, r_sci, r_english); }
+char yconv_2uom   (char a_uom, double *b_value)   { return yconv__uoms ('>', a_uom, b_value, NULL, NULL, NULL, NULL, NULL); }
+char yconv_4uom   (char a_uom, double *b_value)   { return yconv__uoms ('<', a_uom, b_value, NULL, NULL, NULL, NULL, NULL); }
 
 
 

@@ -37,12 +37,10 @@
 
 
 
-
-
 /*====================------------------------------------====================*/
-/*===----                           utility                            ----===*/
+/*===----                         debugging support                    ----===*/
 /*====================------------------------------------====================*/
-static void      o___UTILITY_________________o (void) {;}
+static void      o___DEBUGGING_______________o (void) {;}
 
 char        yCONV_ver     [500];
 
@@ -62,6 +60,46 @@ yCONV_version           (void)
    snprintf (yCONV_ver, 100, "%s   %s : %s", t, P_VERNUM, P_VERTXT);
    return yCONV_ver;
 }
+
+
+
+/*====================------------------------------------====================*/
+/*===----                      validation support                      ----===*/
+/*====================------------------------------------====================*/
+static void      o___VALIDATION______________o (void) {;}
+
+char
+yconv_check_format      (char a_fmt)
+{
+   char        rce         =  -10;
+   char       *x_valid     = "?··yY·bB·oO·xX·zZ·  rR·tTdD··if·IF,·aA$·sS·cC#·pPeE";
+   --rce;  if (a_fmt == 0)           return rce;
+   --rce;  if (a_fmt == ' ')         return rce;
+   --rce;  if (a_fmt == '·')         return rce;
+   if (strchr (x_valid, a_fmt) == 0) return rce;
+   return 0;
+}
+
+char
+yconv_check_count       (char a_cnt)
+{
+   char        rce         =  -10;
+   --rce;  if (a_cnt < 0)  return rce;
+   --rce;  if (a_cnt > 9)  return rce;
+   return 0;
+}
+
+char
+yconv_check_uom         (char a_unit)
+{
+   char        rce         =  -10;
+   char        rc          =    0;
+   --rce;  if (a_unit == 0)    return rce;
+   --rce;  if (a_unit == ' ')  return rce;
+   rc = yconv_uoms (a_unit, NULL, NULL, NULL, NULL, NULL);
+   return rc;
+}
+
 
 
 /*===[[ END ]]================================================================*/

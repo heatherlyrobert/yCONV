@@ -89,18 +89,28 @@
 
 
 
+/*===[[ yCONV_base.c ]]=============(·3)======================================*/
+/*········´ ´···········debugging·´ ´·········································*/
+char*       yCONV_version           (void);
+/*········´ ´··········validation·´ ´·········································*/
+char        yconv_check_format      (char a_fmt);
+char        yconv_check_count       (char a_cnt);
+char        yconv_check_uom         (char a_uom);
+/*········´ ´················DONE·´ ´·········································*/
 
-/*===[[ yCONV_units.c ]]======================================================*/
+
+
+/*===[[ yCONV_units.c ]]============(·3)======================================*/
 /*········´ ´··············public·´ ´·········································*/
-char        yconv_units             (char a_unit, char *r_pow, double *r_scale, char r_name [LEN_TERSE], char r_sci [LEN_SHORT], char r_english [LEN_LABEL]);
-char        yconv_2unit             (char a_unit, double *b_value);
-char        yconv_4unit             (char a_unit, double *b_value);
+char        yconv_uoms              (char a_uom, char *r_pow, double *r_scale, char r_name [LEN_TERSE], char r_sci [LEN_SHORT], char r_english [LEN_LABEL]);
+char        yconv_2uom              (char a_uom, double *b_value);
+char        yconv_4uom              (char a_uom, double *b_value);
 /*········´ ´················DONE·´ ´·········································*/
 
 
 
 
-/*===[[ yCONV_short.c ]]======================================================*/
+/*===[[ yCONV_short.c ]]============(·9)======================================*/
 /*········´ ´················size·´ ´·········································*/
 char        yconv_size              (llong a_size, char a_fmt, char r_used  [LEN_SHORT]);
 char        yconv_count             (llong a_size, char a_fmt, char r_count [LEN_SHORT]);
@@ -117,7 +127,7 @@ char        yconv_time4mongo        (char *a_mongo, long *a_epoch);
 
 
 
-/*===[[ yCONV_2num.c ]]=======================================================*/
+/*===[[ yCONV_2num.c ]]=============(13)======================================*/
 /*········´ ´··············2bases·´ ´·········································*/
 char        yconv_2base             (char a_src [LEN_HUND] , char a_charset [LEN_HUND], ullong *r_ullong);
 char        yconv_2bin              (char a_src [LEN_HUND] , ullong *r_ullong, double *r_double);
@@ -139,7 +149,7 @@ char        yconv_2num              (char a_src [LEN_HUND] , double *r_double);
 
 
 
-/*===[[ yCONV_4str.c ]]=======================================================*/
+/*===[[ yCONV_4str.c ]]=============(15)======================================*/
 /*········´ ´············4support·´ ´·········································*/
 char        yconv_4sigs             (char a_charset [LEN_HUND], char a_dels [LEN_TERSE], char a_sigs, char a_mask, char a_max, char b_out [LEN_HUND]);
 /*········´ ´··············4bases·´ ´·········································*/
@@ -154,11 +164,11 @@ char        yconv_4mongo            (ullong a_ullong, double a_double, char a_cn
 char        yconv_4roman            (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_max, char r_out [LEN_TITLE]);
 char        yconv_4time             (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_max, char r_out [LEN_TITLE]);
 /*········´ ´··············4reals·´ ´·········································*/
-char        yconv_4float            (ullong a_ullong, double a_double, char a_decs, char a_fmt, char a_unit, char a_max, char r_out [LEN_TITLE]);
-char        yconv_4comma            (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_unit, char a_max, char r_out [LEN_TITLE]);
+char        yconv_4float            (ullong a_ullong, double a_double, char a_decs, char a_fmt, char a_uom, char a_max, char r_out [LEN_TITLE]);
+char        yconv_4comma            (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_uom, char a_max, char r_out [LEN_TITLE]);
 char        yconv_4sci              (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_max, char r_out [LEN_TITLE]);
 /*········´ ´·············4driver·´ ´·········································*/
-char        yconv_4main             (ullong a_ullong, double a_double, char a_bytes, char a_fmt, char a_unit, char a_max, char r_out [LEN_TITLE]);
+char        yconv_4main             (ullong a_ullong, double a_double, char a_bytes, char a_fmt, char a_uom, char a_max, char r_out [LEN_TITLE]);
 char*       yconv_4quick            (double a_double, char a_ali, char a_fmt, char a_cnt, char a_uom, char a_fil, char a_zer, char a_neg, char a_max);
 /*········´ ´················DONE·´ ´·········································*/
 

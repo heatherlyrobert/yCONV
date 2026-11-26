@@ -83,8 +83,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "1.--, production"
 #define     P_VERMINOR  "1.0-, moving from ySTR"
-#define     P_VERNUM    "1.0e"
-#define     P_VERTXT    "yconv_4base, bin, oct, int, hex, mongo, comma, sci ported and unit-tested"
+#define     P_VERNUM    "1.0f"
+#define     P_VERTXT    "cleaning and renaming phase ;)  yCONV_2num, _4str, _short, and _uom unit-tested"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -230,14 +230,24 @@ extern const tROMAN S_roman [LEN_DESC];
 
 
 
+/*===[[ yCONV_base.c ]]=============(·3)======================================*/
+/*········´ ´···········debugging·´ ´·········································*/
+char*       yCONV_version           (void);
+/*········´ ´··········validation·´ ´·········································*/
+char        yconv_check_format      (char a_fmt);
+char        yconv_check_count       (char a_cnt);
+char        yconv_check_uom         (char a_uom);
+/*········´ ´················DONE·´ ´·········································*/
+
+
 
 /*===[[ yCONV_units.c ]]======================================================*/
 /*········´ ´·············support·´ ´·········································*/
-char        yconv__units            (char a_dir, char a_unit, double *b_value, char *r_pow, double *r_scale, char r_name [LEN_TERSE], char r_sci [LEN_SHORT], char r_english [LEN_LABEL]);
+char        yconv__uoms             (char a_dir, char a_uom, double *b_value, char *r_pow, double *r_scale, char r_name [LEN_TERSE], char r_sci [LEN_SHORT], char r_english [LEN_LABEL]);
 /*········´ ´··············public·´ ´·········································*/
-char        yconv_units             (char a_unit, char *r_pow, double *r_scale, char r_name [LEN_TERSE], char r_sci [LEN_SHORT], char r_english [LEN_LABEL]);
-char        yconv_2unit             (char a_unit, double *b_value);
-char        yconv_4unit             (char a_unit, double *b_value);
+char        yconv_uoms              (char a_uom, char *r_pow, double *r_scale, char r_name [LEN_TERSE], char r_sci [LEN_SHORT], char r_english [LEN_LABEL]);
+char        yconv_2uom              (char a_uom, double *b_value);
+char        yconv_4uom              (char a_uom, double *b_value);
 /*········´ ´················DONE·´ ´·········································*/
 
 
