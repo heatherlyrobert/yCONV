@@ -83,8 +83,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "1.--, production"
 #define     P_VERMINOR  "1.0-, moving from ySTR"
-#define     P_VERNUM    "1.0d"
-#define     P_VERTXT    "yconv_2base, 2bin, _oct, _int, _hex, _mongo, _comma, _sci ported and unit-tested"
+#define     P_VERNUM    "1.0e"
+#define     P_VERTXT    "yconv_4base, bin, oct, int, hex, mongo, comma, sci ported and unit-tested"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -293,6 +293,7 @@ char        yconv_2num              (char a_src [LEN_HUND] , double *r_double);
 char        yconv__4defense         (char a_type, char a_greek, ullong a_ullong, double a_double, char a_fmt, char a_max, char *r_source, char r_prefix [LEN_SHORT], char r_out [LEN_TITLE]);
 char        yconv__space_ints       (char a_every, char a_char, char b_out [LEN_HUND]);
 char        yconv__space_decs       (char a_every, char a_char, char b_out [LEN_HUND]);
+char        yconv_4sigs             (char a_charset [LEN_HUND], char a_dels [LEN_TERSE], char a_sigs, char a_mask, char a_max, char b_out [LEN_HUND]);
 /*········´ ´··············4bases·´ ´·········································*/
 char        yconv_4base             (ullong a_ullong, double a_double, char a_prefix [LEN_SHORT], char a_charset [LEN_HUND], char a_spacing, char a_cnt, char a_fmt, char a_max, char r_out [LEN_HUND]);
 char        yconv_4bool             (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_max, char r_out [LEN_TITLE]);

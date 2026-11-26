@@ -140,6 +140,8 @@ char        yconv_2num              (char a_src [LEN_HUND] , double *r_double);
 
 
 /*===[[ yCONV_4str.c ]]=======================================================*/
+/*········´ ´············4support·´ ´·········································*/
+char        yconv_4sigs             (char a_charset [LEN_HUND], char a_dels [LEN_TERSE], char a_sigs, char a_mask, char a_max, char b_out [LEN_HUND]);
 /*········´ ´··············4bases·´ ´·········································*/
 char        yconv_4base             (ullong a_ullong, double a_double, char a_prefix [LEN_SHORT], char a_charset [LEN_HUND], char a_spacing, char a_cnt, char a_fmt, char a_max, char r_out [LEN_HUND]);
 char        yconv_4bool             (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_max, char r_out [LEN_TITLE]);
