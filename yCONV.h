@@ -99,6 +99,28 @@ char        yconv_4unit             (char a_unit, double *b_value);
 
 
 
+
+/*===[[ yCONV_short.c ]]======================================================*/
+/*········´ ´················size·´ ´·········································*/
+char        yconv_size              (llong a_size, char a_fmt, char r_used  [LEN_SHORT]);
+char        yconv_count             (llong a_size, char a_fmt, char r_count [LEN_SHORT]);
+char        yconv_size_full         (llong a_size, char a_fmt, char r_used  [LEN_SHORT], char *r_large, llong a_alloc, char r_size [LEN_SHORT], char *r_pct, char *r_dense);
+/*········´ ´·················age·´ ´·········································*/
+char        yconv_age               (long a_since, char a_fmt, char r_age [LEN_SHORT], char *r_flag);
+char        yconv_age_full          (long a_since, long a_now, char a_fmt, char r_age [LEN_SHORT], char *r_flag);
+char        yconv_dur               (long a_secs,  char a_fmt, char r_age [LEN_SHORT], char *r_flag);
+char        yconv_unage             (char a_age [LEN_SHORT], long *r_secs);
+/*········´ ´···············count·´ ´·········································*/
+char        yconv_time2mongo        (long a_epoch, char *a_mongo);
+char        yconv_time4mongo        (char *a_mongo, long *a_epoch);
+/*········´ ´················DONE·´ ´·········································*/
+
+
+
+
+
+
+
 /*> /+===[[ ySTR_nums.c ]]========================================================+/                                                                                                                           <* 
  *> /+········´ ´···············units·´ ´·········································+/                                                                                                                           <* 
  *> char        ystrunits               (char a_unit, char *r_pow, double *r_scale, char r_name [LEN_TERSE], char r_sci [LEN_SHORT], char r_english [LEN_LABEL]);                                              <* 

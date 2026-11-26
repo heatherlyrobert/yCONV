@@ -83,8 +83,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "1.--, production"
 #define     P_VERMINOR  "1.0-, moving from ySTR"
-#define     P_VERNUM    "1.0b"
-#define     P_VERTXT    "added many of my standard documentation fields in private header"
+#define     P_VERNUM    "1.0c"
+#define     P_VERTXT    "size, count, age, dur, and unage are moved, improved, and unit-tested"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -212,6 +212,26 @@ char        yconv__units            (char a_dir, char a_unit, double *b_value, c
 char        yconv_units             (char a_unit, char *r_pow, double *r_scale, char r_name [LEN_TERSE], char r_sci [LEN_SHORT], char r_english [LEN_LABEL]);
 char        yconv_2unit             (char a_unit, double *b_value);
 char        yconv_4unit             (char a_unit, double *b_value);
+/*········´ ´················DONE·´ ´·········································*/
+
+
+
+
+/*===[[ yCONV_short.c ]]======================================================*/
+/*········´ ´················size·´ ´·········································*/
+char        yconv__size             (llong a_size, char a_base, char a_fmt, char r_size [LEN_SHORT]);
+char        yconv_size              (llong a_size, char a_fmt, char r_used [LEN_SHORT]);
+char        yconv_count             (llong a_size, char a_fmt, char r_count [LEN_SHORT]);
+char        yconv_size_full         (llong a_size, char a_fmt, char r_used [LEN_SHORT], char *r_large, llong a_alloc, char r_size [LEN_SHORT], char *r_pct, char *r_dense);
+/*········´ ´·················age·´ ´·········································*/
+char        yconv__age              (long a_since, long a_now, char a_fmt, char r_age [LEN_SHORT], char *r_flag);
+char        yconv_age               (long a_since, char a_fmt, char r_age [LEN_SHORT], char *r_flag);
+char        yconv_age_full          (long a_since, long a_now, char a_fmt, char r_age [LEN_SHORT], char *r_flag);
+char        yconv_dur               (long a_secs,  char a_fmt, char r_age [LEN_SHORT], char *r_flag);
+char        yconv_unage             (char a_age [LEN_SHORT], long *r_secs);
+/*········´ ´···············count·´ ´·········································*/
+char        yconv_time2mongo        (long a_epoch, char *a_mongo);
+char        yconv_time4mongo        (char *a_mongo, long *a_epoch);
 /*········´ ´················DONE·´ ´·········································*/
 
 
