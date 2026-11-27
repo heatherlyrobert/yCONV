@@ -83,8 +83,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "1.--, production"
 #define     P_VERMINOR  "1.0-, moving from ySTR"
-#define     P_VERNUM    "1.0h"
-#define     P_VERTXT    "ported format, count, and uom validation functions; and unit-tested"
+#define     P_VERNUM    "1.0i"
+#define     P_VERTXT    "updated yconv__2type and yconv_format_valid to return value range indicator"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -232,7 +232,7 @@ extern const tROMAN S_roman [LEN_DESC];
 /*········´ ´···········debugging·´ ´·········································*/
 char*       yCONV_version           (void);
 /*········´ ´··········validation·´ ´·········································*/
-char        yconv_format_valid      (char a_fmt);
+char        yconv_format_valid      (char a_fmt, char *r_range);
 char        yconv_count_valid       (char a_cnt);
 char        yconv_uom_valid         (char a_uom);
 /*········´ ´················DONE·´ ´·········································*/
@@ -288,7 +288,7 @@ char        yconv_2comma            (char a_src [LEN_TITLE], ullong *r_ullong, d
 char        yconv_2real             (char a_src [LEN_TITLE], ullong *r_ullong, double *r_double);
 char        yconv_2sci              (char a_src [LEN_TITLE], ullong *r_ullong, double *r_double);
 /*········´ ´·············2driver·´ ´·········································*/
-char        yconv__2type            (char a_src [LEN_HUND]);
+char        yconv__2type            (char a_src [LEN_HUND] , char *r_range);
 char        yconv_2main             (char a_src [LEN_HUND] , char *r_type, ullong *r_ullong, double *r_double);
 char        yconv_2num              (char a_src [LEN_HUND] , double *r_double);
 /*········´ ´················DONE·´ ´·········································*/
@@ -321,6 +321,17 @@ char        yconv_4time             (ullong a_ullong, double a_double, char a_cn
 char        yconv_4main             (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_unit, char a_max, char r_out [LEN_TITLE]);
 char*       yconv_4quick            (double a_double, char a_ali, char a_fmt, char a_cnt, char a_uom, char a_fil, char a_zer, char a_neg, char a_max);
 /*········´ ´················DONE·´ ´·········································*/
+
+
+
+/*===[[ yCONV_trans.c ]]============(·2)======================================*/
+/*········´ ´················leet·´ ´·········································*/
+char        yconv_2leet             (char a_engl [LEN_HUND], char a_max, char r_leet [LEN_HUND]);
+char        yconv_4leet             (char a_leet [LEN_HUND], char a_max, char r_engl [LEN_HUND]);
+/*········´ ´·············general·´ ´·········································*/
+char        yconv_base2base         (char a_src  [LEN_HUND], char a_fmt, char r_out [LEN_TITLE]);
+/*········´ ´················DONE·´ ´·········································*/
+
 
 
 #endif

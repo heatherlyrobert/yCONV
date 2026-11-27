@@ -72,7 +72,7 @@
 /*········´ ´···········debugging·´ ´·········································*/
 char*       yCONV_version           (void);
 /*········´ ´··········validation·´ ´·········································*/
-char        yconv_format_valid      (char a_fmt);
+char        yconv_format_valid      (char a_fmt, char *r_range);
 char        yconv_count_valid       (char a_cnt);
 char        yconv_uom_valid         (char a_uom);
 /*········´ ´················DONE·´ ´·········································*/
@@ -148,6 +148,14 @@ char        yconv_4sci              (ullong a_ullong, double a_double, char a_cn
 /*········´ ´·············4driver·´ ´·········································*/
 char        yconv_4main             (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_uom, char a_max, char r_out [LEN_TITLE]);
 char*       yconv_4quick            (double a_double, char a_ali, char a_fmt, char a_cnt, char a_uom, char a_fil, char a_zer, char a_neg, char a_max);
+/*········´ ´················DONE·´ ´·········································*/
+
+
+
+/*===[[ yCONV_trans.c ]]============(·2)======================================*/
+/*········´ ´················leet·´ ´·········································*/
+char        yconv_2leet             (char a_engl [LEN_HUND], char a_max, char r_leet [LEN_HUND]);
+char        yconv_4leet             (char a_leet [LEN_HUND], char a_max, char r_engl [LEN_HUND]);
 /*········´ ´················DONE·´ ´·········································*/
 
 

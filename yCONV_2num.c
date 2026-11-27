@@ -653,8 +653,8 @@ yconv_2roman              (char a_src [LEN_TITLE], ullong *r_ullong, double *r_d
    DEBUG_YCONV   yLOG_value   ("l"         , l);
    /*---(quick-out)----------------------*/
    if (strcmp (a_src, "N") == 0 || strcmp (a_src, "n") == 0) {
-      DEBUG_YCONV   yLOG_snote   ("found N/n (zero)");
-      DEBUG_YCONV   yLOG_sexit   (__FUNCTION__);
+      DEBUG_YCONV   yLOG_note    ("found N/n (zero)");
+      DEBUG_YCONV   yLOG_exit    (__FUNCTION__);
       return 1;
    }
    /*---(prepare)------------------------*/
@@ -688,7 +688,7 @@ yconv_2roman              (char a_src [LEN_TITLE], ullong *r_ullong, double *r_d
    if (r_ullong != NULL)  *r_ullong = x_ullong;
    if (r_double != NULL)  *r_double = (double) x_ullong;
    /*---(complete)-----------------------*/
-   DEBUG_YCONV   yLOG_sexit   (__FUNCTION__);
+   DEBUG_YCONV   yLOG_exit    (__FUNCTION__);
    return c;
 }
 
@@ -1088,7 +1088,7 @@ char yconv_2sci   (char a_src [LEN_TITLE], ullong *r_ullong, double *r_double) {
 static void      o___2DRIVER_________________o (void) {;}
 
 char
-yconv__2type              (char a_src [LEN_HUND])
+yconv__2type            (char a_src [LEN_HUND], char *r_range)
 {
    /*---(locals)-----------+-----+-----+-*/
    char        rce         =  -10;
@@ -1106,6 +1106,8 @@ yconv__2type              (char a_src [LEN_HUND])
    char        c           =    0;
    /*---(header)-------------------------*/
    DEBUG_YCONV   yLOG_enter   (__FUNCTION__);
+   /*---(default)------------------------*/
+   if (r_range  != NULL)   *r_range = '-';
    /*---(defense)------------------------*/
    DEBUG_YCONV   yLOG_point   ("a_src"     , a_src);
    --rce;  if (a_src == NULL || a_src [0] == '\0') {
@@ -1122,11 +1124,13 @@ yconv__2type              (char a_src [LEN_HUND])
    --rce;  if (l == 1) {
       if (strchr (YSTR_NUMBER, x_1st) != NULL) {
          DEBUG_YCONV   yLOG_note    ("single digit number");
+         if (r_range != NULL)  *r_range = 'd';
          DEBUG_YCONV   yLOG_exit    (__FUNCTION__);
          return TYPE_INT;
       }
       if (strchr (YSTR_ROMAN, tolower (x_1st)) != NULL) {
          DEBUG_YCONV   yLOG_note    ("single roman digit");
+         if (r_range != NULL)  *r_range = 'r';
          DEBUG_YCONV   yLOG_exit    (__FUNCTION__);
          return TYPE_ROMAN;
       }
@@ -1141,6 +1145,7 @@ yconv__2type              (char a_src [LEN_HUND])
    DEBUG_YCONV   yLOG_value   ("c"         , c);
    if (c > 0) {
       DEBUG_YCONV   yLOG_note    ("real number decimal or exponent");
+      if (r_range != NULL)  *r_range = 'd';
       DEBUG_YCONV   yLOG_exit    (__FUNCTION__);
       return TYPE_FLOAT;
    }
@@ -1150,6 +1155,7 @@ yconv__2type              (char a_src [LEN_HUND])
    DEBUG_YCONV   yLOG_point   ("p"         , p);
    if (p != NULL) {
       DEBUG_YCONV   yLOG_note    ("integer prefixes");
+      if (r_range != NULL)  *r_range = 'd';
       DEBUG_YCONV   yLOG_exit    (__FUNCTION__);
       return TYPE_INT;
    }
@@ -1160,6 +1166,7 @@ yconv__2type              (char a_src [LEN_HUND])
    DEBUG_YCONV   yLOG_point   ("p"         , p);
    if (p != NULL) {
       DEBUG_YCONV   yLOG_note    ("integer suffixes");
+      if (r_range != NULL)  *r_range = 'd';
       DEBUG_YCONV   yLOG_exit    (__FUNCTION__);
       return TYPE_INT;
    }
@@ -1170,6 +1177,7 @@ yconv__2type              (char a_src [LEN_HUND])
    if (p != NULL) {
       DEBUG_YCONV   yLOG_note    ("single letter prefix");
       DEBUG_YCONV   yLOG_exit    (__FUNCTION__);
+      if (r_range != NULL)  *r_range = 'u';
       return tolower (x_1st);
    }
    /*---(normal greek)-------------------*/
@@ -1180,6 +1188,7 @@ yconv__2type              (char a_src [LEN_HUND])
       DEBUG_YCONV   yLOG_note    ("greek letter prefix");
       n = (char) (p - x_greek);
       DEBUG_YCONV   yLOG_value   ("n"         , n);
+      if (r_range != NULL)  *r_range = 'u';
       DEBUG_YCONV   yLOG_exit    (__FUNCTION__);
       return x_bases [n];
    }
@@ -1189,14 +1198,17 @@ yconv__2type              (char a_src [LEN_HUND])
    if (x_1st == '0') {
       if (strchr (TYPE_BASES, tolower (x_2nd)) != NULL) {
          DEBUG_YCONV   yLOG_note    ("zero-led prefix");
+         if (r_range != NULL)  *r_range = 'u';
          DEBUG_YCONV   yLOG_exit    (__FUNCTION__);
          return tolower (x_2nd);
       } else if (strchr (YSTR_NUMBER, x_2nd) != NULL) {
          DEBUG_YCONV   yLOG_note    ("zero led octal");
+         if (r_range != NULL)  *r_range = 'u';
          DEBUG_YCONV   yLOG_exit    (__FUNCTION__);
          return TYPE_OCT;
       } else if (x_2nd == '.') {
          DEBUG_YCONV   yLOG_note    ("zero plus decimal real");
+         if (r_range != NULL)  *r_range = 'd';
          DEBUG_YCONV   yLOG_exit    (__FUNCTION__);
          return TYPE_FLOAT;
       }
@@ -1219,6 +1231,13 @@ yconv__2type              (char a_src [LEN_HUND])
       return TYPE_FAIL;
       /*---(done)------------------------*/
    }
+   /*---(save-back)----------------------*/
+   if (r_range != NULL) {
+      if      (strchr (x_bases, x_type) != NULL)  *r_range = 'u';
+      else if (strchr (x_greek, x_type) != NULL)  *r_range = 'u';
+      else if (x_type == TYPE_ROMAN)              *r_range = 'r';
+      else                                        *r_range = 'd';
+   }
    /*---(complete)-----------------------*/
    DEBUG_YCONV   yLOG_exit    (__FUNCTION__);
    return x_type;
@@ -1238,7 +1257,7 @@ yconv_2main               (char a_src [LEN_HUND] , char *r_type, ullong *r_ullon
    if (r_ullong  != NULL)  *r_ullong =   0;
    if (r_double  != NULL)  *r_double = 0.0;
    /*---(defense)------------------------*/
-   rc = yconv__2type (a_src);
+   rc = yconv__2type (a_src, NULL);
    DEBUG_YCONV   yLOG_value   ("yconv__2type", rc);
    --rce;  if (rc < 0) {
       DEBUG_YCONV   yLOG_exitr   (__FUNCTION__, rce);

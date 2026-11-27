@@ -1286,7 +1286,7 @@ yconv_4main          (ullong a_ullong, double a_double, char a_cnt, char a_fmt, 
    DEBUG_YCONV   yLOG_enter   (__FUNCTION__);
    /*---(defense)------------------------*/
    DEBUG_YCONV   yLOG_char    ("a_fmt"     , a_fmt);
-   if (yconv_format_valid (a_fmt) < 0) {
+   if (yconv_format_valid (a_fmt, NULL) < 0) {
       DEBUG_YCONV   yLOG_note    ("a_fmt illegal");
       ystrlcpy (r_out, "#p/fmt", a_max);
       DEBUG_YCONV   yLOG_exitr   (__FUNCTION__, rce);

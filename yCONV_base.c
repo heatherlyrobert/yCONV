@@ -69,14 +69,25 @@ yCONV_version           (void)
 static void      o___VALIDATION______________o (void) {;}
 
 char
-yconv_format_valid      (char a_fmt)
+yconv_format_valid      (char a_fmt, char *r_range)
 {
    char        rce         =  -10;
    char       *x_valid     = "?··yY·bB·oO·xX·zZ·  rR·tTdD··if·IF,·aA$·sS·cC#·pP·eE";
+   /*---(default)------------------------*/
+   if (r_range != NULL)  *r_range = '-';
+   /*---(defense)------------------------*/
    --rce;  if (a_fmt == 0)           return rce;
    --rce;  if (a_fmt == ' ')         return rce;
    --rce;  if (a_fmt == '·')         return rce;
+   /*---(check)--------------------------*/
    if (strchr (x_valid, a_fmt) == 0) return rce;
+   /*---(save-back)----------------------*/
+   if (r_range != NULL) {
+      if      (strchr ("bBoOxXzZ", a_fmt) != NULL)  *r_range = 'u';
+      else if (strchr ("rR"      , a_fmt) != NULL)  *r_range = 'r';
+      else                                          *r_range = 'd';
+   }
+   /*---(complete)-----------------------*/
    return 0;
 }
 
