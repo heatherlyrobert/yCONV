@@ -83,8 +83,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "1.--, production"
 #define     P_VERMINOR  "1.0-, moving from ySTR"
-#define     P_VERNUM    "1.0f"
-#define     P_VERTXT    "cleaning and renaming phase ;)  yCONV_2num, _4str, _short, and _uom unit-tested"
+#define     P_VERNUM    "1.0g"
+#define     P_VERTXT    "ystrlhint ported to yconv_hint, improved, and unit-tested"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -199,9 +199,7 @@ typedef     struct   tm           tTIME;
 #define     MAX_DOUBLE              999999999999999.0        /* clean, precise 15 significant digits */
 #define     MAX_LLONG               9223372036854775807ULL
 #define     MAX_ULLONG              18446744073709551615ULL
-/*········´ ´················DONE·´ ´·········································*/
-
-
+/*········´ ´···············types·´ ´·········································*/
 #define     TYPE_BIN    'b'
 #define     TYPE_OCT    'o'
 #define     TYPE_INT    'i'
@@ -214,9 +212,9 @@ typedef     struct   tm           tTIME;
 #define     TYPE_TIME   't'
 #define     TYPE_DATE   'd'
 #define     TYPE_FAIL   '°'
-
 #define     TYPE_BASES  "boxz"
 #define     TYPE_NORMS  "+-($"
+/*········´ ´················DONE·´ ´·········································*/
 
 
 
@@ -263,9 +261,8 @@ char        yconv_age               (long a_since, char a_fmt, char r_age [LEN_S
 char        yconv_age_full          (long a_since, long a_now, char a_fmt, char r_age [LEN_SHORT], char *r_flag);
 char        yconv_dur               (long a_secs,  char a_fmt, char r_age [LEN_SHORT], char *r_flag);
 char        yconv_unage             (char a_age [LEN_SHORT], long *r_secs);
-/*········´ ´···············count·´ ´·········································*/
-char        yconv_time2mongo        (long a_epoch, char *a_mongo);
-char        yconv_time4mongo        (char *a_mongo, long *a_epoch);
+/*········´ ´················hint·´ ´·········································*/
+int         yconv_hint              (int a_val, char a_spec [LEN_SHORT], int *r_max, char r_label [LEN_SHORT]);
 /*········´ ´················DONE·´ ´·········································*/
 
 
@@ -315,13 +312,13 @@ char        yconv_4mongo            (ullong a_ullong, double a_double, char a_cn
 /*········´ ´············4special·´ ´·········································*/
 char        yconv_4roman            (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_max, char r_out [LEN_TITLE]);
 /*········´ ´··············4reals·´ ´·········································*/
-char        yconv__4divide          (double a_source, char a_decs, char a_unit, char a_max, char *r_sign, llong *r_int, llong *r_dec, llong *r_exp, char r_unit [LEN_SHORT], char r_out [LEN_TITLE]);
-char        yconv_4float            (ullong a_ullong, double a_double, char a_decs, char a_fmt, char a_unit, char a_max, char r_out [LEN_TITLE]);
+char        yconv__4divide          (double a_source, char a_cnt, char a_unit, char a_max, char *r_sign, llong *r_int, llong *r_dec, llong *r_exp, char r_unit [LEN_SHORT], char r_out [LEN_TITLE]);
+char        yconv_4float            (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_unit, char a_max, char r_out [LEN_TITLE]);
 char        yconv_4comma            (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_unit, char a_max, char r_out [LEN_TITLE]);
 char        yconv_4sci              (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_max, char r_out [LEN_TITLE]);
 char        yconv_4time             (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_max, char r_out [LEN_TITLE]);
 /*········´ ´·············4driver·´ ´·········································*/
-char        yconv_4main             (ullong a_ullong, double a_double, char a_bytes, char a_fmt, char a_unit, char a_max, char r_out [LEN_TITLE]);
+char        yconv_4main             (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_unit, char a_max, char r_out [LEN_TITLE]);
 char*       yconv_4quick            (double a_double, char a_ali, char a_fmt, char a_cnt, char a_uom, char a_fil, char a_zer, char a_neg, char a_max);
 /*········´ ´················DONE·´ ´·········································*/
 

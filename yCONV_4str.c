@@ -687,7 +687,7 @@ yconv_4mongo         (ullong a_ullong, double a_double, char a_cnt, char a_fmt, 
 static void      o___4SPECIAL________________o (void) {;}
 
 char
-yconv_4roman         (ullong a_ullong, double a_double, char a_decs, char a_fmt, char a_max, char r_out [LEN_TITLE])
+yconv_4roman         (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_max, char r_out [LEN_TITLE])
 {
    /*---(locals)-----------+-----------+-*/
    char        rce         =  -10;
@@ -763,7 +763,7 @@ yconv_4roman         (ullong a_ullong, double a_double, char a_decs, char a_fmt,
 static void      o___4REALS__________________o (void) {;}
 
 char
-yconv__4divide            (double a_source, char a_decs, char a_uom, char a_max, char *r_sign, llong *r_int, llong *r_dec, llong *r_exp, char r_unit [LEN_SHORT], char r_out [LEN_TITLE])
+yconv__4divide            (double a_source, char a_cnt, char a_uom, char a_max, char *r_sign, llong *r_int, llong *r_dec, llong *r_exp, char r_unit [LEN_SHORT], char r_out [LEN_TITLE])
 {
    /*---(locals)-----------+-----------+-*/
    char        rce         =  -10;
@@ -792,8 +792,8 @@ yconv__4divide            (double a_source, char a_decs, char a_uom, char a_max,
    DEBUG_YCONV   yLOG_value   ("x_sign"    , x_sign);
    /*---(scale full number)--------------*/
    DEBUG_YCONV   yLOG_char    ("a_uom"     , a_uom);
-   --rce;  if (a_decs < 0 || a_decs > 9) {
-      DEBUG_YCONV   yLOG_note    ("a_decs out of range (0-9)");
+   --rce;  if (a_cnt < 0 || a_cnt > 9) {
+      DEBUG_YCONV   yLOG_note    ("a_cnt out of range (0-9)");
       if (r_out != NULL)  ystrlcpy (r_out, "#p/dec", a_max);
       DEBUG_YCONV   yLOG_exitr   (__FUNCTION__, rce);
       return rce;
@@ -813,7 +813,7 @@ yconv__4divide            (double a_source, char a_decs, char a_uom, char a_max,
    else                      sprintf (x_unit, "%c", a_uom);
    DEBUG_YCONV   yLOG_info    ("x_unit"    , x_unit);
    /*---(parse out)----------------------*/
-   for (i = 0; i < a_decs; ++i)  x_pow *= 10;
+   for (i = 0; i < a_cnt; ++i)  x_pow *= 10;
    DEBUG_YCONV   yLOG_llong   ("x_pow"     , x_pow);
    x_round  = round (x_scaled * x_sign * x_pow);
    DEBUG_YCONV   yLOG_double  ("x_round"   , x_round);
@@ -833,7 +833,7 @@ yconv__4divide            (double a_source, char a_decs, char a_uom, char a_max,
 }
 
 char
-yconv_4float             (ullong a_ullong, double a_double, char a_decs, char a_fmt, char a_uom, char a_max, char r_out [LEN_TITLE])
+yconv_4float             (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_uom, char a_max, char r_out [LEN_TITLE])
 {
    /*---(locals)-----------+-----------+-*/
    char        rce         =  -10;
@@ -864,7 +864,7 @@ yconv_4float             (ullong a_ullong, double a_double, char a_decs, char a_
    if (a_ullong > 0)  x_source = (double)  a_ullong;
    else               x_source = a_double;
    if (strchr ("iI", a_fmt) != NULL)  x_decs = 0;
-   else                               x_decs = a_decs;
+   else                               x_decs = a_cnt;
    /*---(divide)-------------------------*/
    DEBUG_YCONV   yLOG_char    ("a_uom"    , a_uom);
    rc = yconv__4divide (x_source, x_decs, a_uom, a_max, &x_sign, &x_int, &x_dec, NULL, x_unit, r_out);
@@ -892,14 +892,14 @@ yconv_4float             (ullong a_ullong, double a_double, char a_decs, char a_
    ystrlcat (x_final, x_left, LEN_TITLE);
    DEBUG_YCONV   yLOG_info    ("left"      , x_final);
    /*---(add decimal)--------------------*/
-   if (strchr ("iI" , a_fmt) == NULL && a_decs > 0) {
+   if (strchr ("iI" , a_fmt) == NULL && a_cnt > 0) {
       if (strchr ("cC" , a_fmt) != NULL)  ystrlcat (x_final, "", LEN_TITLE);
       else                                ystrlcat (x_final, ".", LEN_TITLE);
       DEBUG_YCONV   yLOG_info    ("decimal"   , x_final);
    }
    /*---(create right/decimals)----------*/
-   DEBUG_YCONV   yLOG_value   ("a_decs"    , a_decs);
-   if (strchr ("iI" , a_fmt) == NULL && a_decs > 0) {
+   DEBUG_YCONV   yLOG_value   ("a_cnt"    , a_cnt);
+   if (strchr ("iI" , a_fmt) == NULL && a_cnt > 0) {
       sprintf (x_right, "%lld", x_dec);
       x_sigs += strlen (x_right);
       l      = strlen (x_right);
@@ -935,10 +935,10 @@ yconv_4float             (ullong a_ullong, double a_double, char a_decs, char a_
    DEBUG_YCONV   yLOG_info    ("post-sign" , x_final);
    /*---(integer suffix padding)---------*/
    if (strchr ("iI" , a_fmt) != NULL) {
-      for (i = 0; i <  a_decs; ++i)    ystrlcat (x_final, "·", LEN_TITLE);
-      if (                a_decs > 0)  ystrlcat (x_final, "·", LEN_TITLE); /* for decimal point */
-      if (a_fmt == 'I' && a_decs > 3)  ystrlcat (x_final, "·", LEN_TITLE);
-      if (a_fmt == 'I' && a_decs > 6)  ystrlcat (x_final, "·", LEN_TITLE);
+      for (i = 0; i <  a_cnt; ++i)    ystrlcat (x_final, "·", LEN_TITLE);
+      if (                a_cnt > 0)  ystrlcat (x_final, "·", LEN_TITLE); /* for decimal point */
+      if (a_fmt == 'I' && a_cnt > 3)  ystrlcat (x_final, "·", LEN_TITLE);
+      if (a_fmt == 'I' && a_cnt > 6)  ystrlcat (x_final, "·", LEN_TITLE);
       DEBUG_YCONV   yLOG_info    ("padded"    , x_final);
    }
    /*---(save-back)----------------------*/
@@ -950,7 +950,7 @@ yconv_4float             (ullong a_ullong, double a_double, char a_decs, char a_
 }
 
 char         /*-> format hexadecimal numbers to string ----[ petal  [ 2f---- ]*/
-yconv_4comma         (ullong a_ullong, double a_double, char a_decs, char a_fmt, char a_uom, char a_max, char r_out [LEN_TITLE])
+yconv_4comma         (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_uom, char a_max, char r_out [LEN_TITLE])
 {
    /*---(locals)-----------+-----------+-*/
    char        rce         =  -10;               /* return code for errors    */
@@ -987,7 +987,7 @@ yconv_4comma         (ullong a_ullong, double a_double, char a_decs, char a_fmt,
 
    if (a_double < 0.0)    x_sign  = -1;
    if (a_fmt == '?')   a_fmt   = 'i';
-   if (a_fmt == 'i')   a_decs  =  0;
+   if (a_fmt == 'i')   a_cnt  =  0;
    /*---(scale)--------------------------*/
    x_scaled = a_double;
    rc = yconv_4uom (a_uom, &x_scaled);
@@ -1000,7 +1000,7 @@ yconv_4comma         (ullong a_ullong, double a_double, char a_decs, char a_fmt,
    else if (a_uom == '.')   sprintf (x_unit, "%c", G_CHAR_BIGDOT);
    else                      sprintf (x_unit, "%c", a_uom);
    /*---(parse out)----------------------*/
-   for (i = 0; i < a_decs; ++i)  x_exp *= 10;
+   for (i = 0; i < a_cnt; ++i)  x_exp *= 10;
    x_round  = round (x_scaled * x_sign * x_exp * x_pct);
    x_int    = x_round / x_exp;
    x_frac   = x_round - (x_int * x_exp);
@@ -1020,8 +1020,8 @@ yconv_4comma         (ullong a_ullong, double a_double, char a_decs, char a_fmt,
    strcat (x_final, x_temp);
    DEBUG_YCONV  yLOG_snote    (x_temp);
    /*---(decimal part)-------------------*/
-   if (strchr ("iI", a_fmt) == 0 && a_decs > 0) {
-      sprintf (x_temp, "%0*lld", a_decs, x_frac);
+   if (strchr ("iI", a_fmt) == 0 && a_cnt > 0) {
+      sprintf (x_temp, "%0*lld", a_cnt, x_frac);
       if (strchr ("ACS#F", a_fmt) != NULL)  yconv__space_decs (3, '\'', x_temp);
       strcat  (x_final, ".");
       strcat  (x_final, x_temp);
@@ -1044,8 +1044,8 @@ yconv_4comma         (ullong a_ullong, double a_double, char a_decs, char a_fmt,
       case '#' :                       strcat (x_final, " +"); break;
       }
    }
-   if (a_fmt == 'I' && a_decs > 0) {
-      for (i = 0; i <= a_decs; ++i)  strcat (x_final, " ");
+   if (a_fmt == 'I' && a_cnt > 0) {
+      for (i = 0; i <= a_cnt; ++i)  strcat (x_final, " ");
    }
    DEBUG_YCONV  yLOG_snote    (x_final);
    /*---(create)---------------*/
@@ -1065,7 +1065,7 @@ yconv_4comma         (ullong a_ullong, double a_double, char a_decs, char a_fmt,
 }
 
 char         /*-> format hexadecimal numbers to string ----[ petal  [ 2f---- ]*/
-yconv_4sci           (ullong a_ullong, double a_double, char a_decs, char a_fmt, char a_max, char r_out [LEN_TITLE])
+yconv_4sci           (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_max, char r_out [LEN_TITLE])
 {
    /*---(locals)-----------+-----------+-*/
    char        rce         =  -10;               /* return code for errors    */
@@ -1094,20 +1094,20 @@ yconv_4sci           (ullong a_ullong, double a_double, char a_decs, char a_fmt,
    }
    /*---(prepare)---------------------*/
    if (a_double < 0.0)  x_sign  = -1;
-   if (a_decs == 0)  a_decs  =  1;
+   if (a_cnt == 0)  a_cnt  =  1;
    strcpy  (x_final, "");
    /*---(make prefix)-----------------*/
    if (x_sign < 0)          strcpy (x_final, "-");
    else if (a_fmt == 'E')   strcpy (x_final, "+");
-   sprintf (x_temp, "%.*e", a_decs, a_double * x_sign);
+   sprintf (x_temp, "%.*e", a_cnt, a_double * x_sign);
    strncat (x_final, x_temp, 2);
    /*---(save exponent/suffix)--------*/
-   if (a_fmt == 'E')  strcpy  (x_suffix, x_temp + a_decs + 2);
-   else               sprintf (x_suffix, "Ë%d", atoi (x_temp + a_decs + 3));
-   x_temp  [a_decs + 2] = '\0';
+   if (a_fmt == 'E')  strcpy  (x_suffix, x_temp + a_cnt + 2);
+   else               sprintf (x_suffix, "Ë%d", atoi (x_temp + a_cnt + 3));
+   x_temp  [a_cnt + 2] = '\0';
    /*---(parse decimals)--------------*/
    strcpy  (x_prefix, x_temp + 2);
-   if (a_fmt == 'E' && a_decs > 3)  yconv__space_decs (3, '\'', x_prefix);
+   if (a_fmt == 'E' && a_cnt > 3)  yconv__space_decs (3, '\'', x_prefix);
    /*---(contat)----------------------*/
    strcat  (x_final, x_prefix);
    /*> if (a_fmt == 'E')  strcat  (x_final, " ");                                     <*/
@@ -1158,7 +1158,7 @@ yconv_4sci           (ullong a_ullong, double a_double, char a_decs, char a_fmt,
  */
 
 char         /*-> format times into strings ---------------[ petal  [ 2f---- ]*/
-yconv_4time          (ullong a_ullong, double a_double, char a_decs, char a_fmt, char a_max, char r_out [LEN_TITLE])
+yconv_4time          (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_max, char r_out [LEN_TITLE])
 {
    /*---(locals)-----------+-----------+-*/
    char        rce         =  -10;               /* return code for errors    */
@@ -1277,7 +1277,7 @@ yconv_4time          (ullong a_ullong, double a_double, char a_decs, char a_fmt,
 static void      o___4DRIVER_________________o (void) {;}
 
 char
-yconv_4main          (ullong a_ullong, double a_double, char a_bytes, char a_fmt, char a_uom, char a_max, char r_out [LEN_TITLE])
+yconv_4main          (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_uom, char a_max, char r_out [LEN_TITLE])
 {
    /*---(locals)-----------+-----+-----+-*/
    char        rce         =  -10;
@@ -1292,8 +1292,8 @@ yconv_4main          (ullong a_ullong, double a_double, char a_bytes, char a_fmt
       DEBUG_YCONV   yLOG_exitr   (__FUNCTION__, rce);
       return rce;
    }
-   DEBUG_YCONV   yLOG_char    ("a_bytes"   , a_bytes);
-   if (yconv_check_count (a_bytes) < 0) {
+   DEBUG_YCONV   yLOG_char    ("a_cnt"   , a_cnt);
+   if (yconv_check_count (a_cnt) < 0) {
       DEBUG_YCONV   yLOG_note    ("a_cnt illegal");
       ystrlcpy (r_out, "#p/dec", a_max);
       DEBUG_YCONV   yLOG_exitr   (__FUNCTION__, rce);
@@ -1303,39 +1303,39 @@ yconv_4main          (ullong a_ullong, double a_double, char a_bytes, char a_fmt
    switch (tolower (a_fmt)) {
    case 'y' : case 'Y' :
       DEBUG_YCONV   yLOG_note    ("selected boolean");
-      rc = yconv_4bool  (a_ullong, a_double, a_bytes, a_fmt, a_max, r_out);
+      rc = yconv_4bool  (a_ullong, a_double, a_cnt, a_fmt, a_max, r_out);
       break;
    case 'b' : case 'B' :
       DEBUG_YCONV   yLOG_note    ("selected binary");
-      rc = yconv_4bin   (a_ullong, a_double, a_bytes, a_fmt, a_max, r_out);
+      rc = yconv_4bin   (a_ullong, a_double, a_cnt, a_fmt, a_max, r_out);
       break;
    case 'o' : case 'O' :
       DEBUG_YCONV   yLOG_note    ("selected octal");
-      rc = yconv_4oct   (a_ullong, a_double, a_bytes, a_fmt, a_max, r_out);
+      rc = yconv_4oct   (a_ullong, a_double, a_cnt, a_fmt, a_max, r_out);
       break;
    case 'x' : case 'X' :
       DEBUG_YCONV   yLOG_note    ("selected hexadecimal");
-      rc = yconv_4hex   (a_ullong, a_double, a_bytes, a_fmt, a_max, r_out);
+      rc = yconv_4hex   (a_ullong, a_double, a_cnt, a_fmt, a_max, r_out);
       break;
    case 'z' : case 'Z' :
       DEBUG_YCONV   yLOG_note    ("selected base64/mongo");
-      rc = yconv_4mongo (a_ullong, a_double, a_bytes, a_fmt, a_max, r_out);
+      rc = yconv_4mongo (a_ullong, a_double, a_cnt, a_fmt, a_max, r_out);
       break;
    case 'e' : case 'E' :
       DEBUG_YCONV   yLOG_note    ("selected scientific notation");
-      rc = yconv_4sci   (a_ullong, a_double, a_bytes, a_fmt, a_max, r_out);
+      rc = yconv_4sci   (a_ullong, a_double, a_cnt, a_fmt, a_max, r_out);
       break;
    case 'r' : case 'R' :
       DEBUG_YCONV   yLOG_note    ("selected roman numerals");
-      rc = yconv_4roman (a_ullong, a_double, a_bytes, a_fmt, a_max, r_out);
+      rc = yconv_4roman (a_ullong, a_double, a_cnt, a_fmt, a_max, r_out);
       break;
    case 'd' : case 't' : case 'D' : case 'T' :
       DEBUG_YCONV   yLOG_note    ("selected time/date");
-      rc = yconv_4time  (a_ullong, a_double, a_bytes, a_fmt, a_max, r_out);
+      rc = yconv_4time  (a_ullong, a_double, a_cnt, a_fmt, a_max, r_out);
       break;
    default :
       DEBUG_YCONV   yLOG_note    ("selected comma");
-      rc = yconv_4comma (a_ullong, a_double, a_bytes, a_fmt, a_uom, a_max, r_out);
+      rc = yconv_4comma (a_ullong, a_double, a_cnt, a_fmt, a_uom, a_max, r_out);
       break;
    }
    DEBUG_YCONV   yLOG_value   ("rc"        , rc);
@@ -1356,3 +1356,7 @@ yconv_4quick             (double a_double, char a_ali, char a_fmt, char a_cnt, c
    rc = ystrlpad   (t, x_print, a_fil, a_ali, a_max);
    return x_print;
 }
+
+
+
+

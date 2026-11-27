@@ -56,31 +56,10 @@
 
 
 /*
- *   ySTR is a set of shared functions for string handling and manipulation
- *   services for use by the calling program.  it was designed to take a
- *   repeditive, tedious, haphazard, and neglected set of functions and make
- *   them systematic, shared, testable, maintainable, and reliable.
- *
- *   in keeping with the refactoring motto of "DRY: don't repeat yourself", we
- *   will build this code into a single set of shared library so that we have
+ *   in keeping with the refactoring motto of "DRY: don't repeat yourself", i
+ *   built this code into a single set of shared library so that we have
  *   a single, unambiguous, authoritative version of the functions.
  *
- *   ySTR will focus on supplementing "string.h" with functions that can
- *   increase security, eliminate hidden bugs, and reduce the code intensity
- *   in programs using it...
- *      - eliminate strcat, strcpy with their potential overruns
- *      - reduce hidden errors caused by misuse of strncat and strncpy
- *      - stop small possibility of overrun in strlen
- *      - create a standard for trimming whitespace which most program need
- *      - simplify and standardize delimiter handling
- *      - anything else clever i can think of ;)
- * 
- *   many existing libraries and utilities have been built by better programmers
- *   that are likely superior in speed, size, capability, and reliability; BUT,
- *   i would not have learned nearly as much using them, so follow the adage...
- * 
- *   TO TRULY LEARN> do not seek to follow in the footsteps of the men of old;
- *   seek what they sought ~ Matsuo Basho
  */
 
 
@@ -110,7 +89,7 @@ char        yconv_4uom              (char a_uom, double *b_value);
 
 
 
-/*===[[ yCONV_short.c ]]============(·9)======================================*/
+/*===[[ yCONV_short.c ]]============(·8)======================================*/
 /*········´ ´················size·´ ´·········································*/
 char        yconv_size              (llong a_size, char a_fmt, char r_used  [LEN_SHORT]);
 char        yconv_count             (llong a_size, char a_fmt, char r_count [LEN_SHORT]);
@@ -120,9 +99,8 @@ char        yconv_age               (long a_since, char a_fmt, char r_age [LEN_S
 char        yconv_age_full          (long a_since, long a_now, char a_fmt, char r_age [LEN_SHORT], char *r_flag);
 char        yconv_dur               (long a_secs,  char a_fmt, char r_age [LEN_SHORT], char *r_flag);
 char        yconv_unage             (char a_age [LEN_SHORT], long *r_secs);
-/*········´ ´···············count·´ ´·········································*/
-char        yconv_time2mongo        (long a_epoch, char *a_mongo);
-char        yconv_time4mongo        (char *a_mongo, long *a_epoch);
+/*········´ ´················hint·´ ´·········································*/
+int         yconv_hint              (int a_val, char a_spec [LEN_SHORT], int *r_max, char r_label [LEN_SHORT]);
 /*········´ ´················DONE·´ ´·········································*/
 
 
@@ -164,11 +142,11 @@ char        yconv_4mongo            (ullong a_ullong, double a_double, char a_cn
 char        yconv_4roman            (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_max, char r_out [LEN_TITLE]);
 char        yconv_4time             (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_max, char r_out [LEN_TITLE]);
 /*········´ ´··············4reals·´ ´·········································*/
-char        yconv_4float            (ullong a_ullong, double a_double, char a_decs, char a_fmt, char a_uom, char a_max, char r_out [LEN_TITLE]);
+char        yconv_4float            (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_uom, char a_max, char r_out [LEN_TITLE]);
 char        yconv_4comma            (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_uom, char a_max, char r_out [LEN_TITLE]);
 char        yconv_4sci              (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_max, char r_out [LEN_TITLE]);
 /*········´ ´·············4driver·´ ´·········································*/
-char        yconv_4main             (ullong a_ullong, double a_double, char a_bytes, char a_fmt, char a_uom, char a_max, char r_out [LEN_TITLE]);
+char        yconv_4main             (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_uom, char a_max, char r_out [LEN_TITLE]);
 char*       yconv_4quick            (double a_double, char a_ali, char a_fmt, char a_cnt, char a_uom, char a_fil, char a_zer, char a_neg, char a_max);
 /*········´ ´················DONE·´ ´·········································*/
 

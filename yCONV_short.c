@@ -345,3 +345,96 @@ yconv_unage             (char a_age [LEN_SHORT], long *r_secs)
 
 
 
+/*====================------------------------------------====================*/
+/*===----                     hint generation                          ----===*/
+/*====================------------------------------------====================*/
+static void      o___HINT____________________o (void) {;}
+
+int
+yconv_hint               (int a_val, char a_spec [LEN_SHORT], int *r_max, char r_label [LEN_SHORT])
+{
+   /*---(locals)-----------+-----+-----+-*/
+   char        rce         =  -10;
+   int         i           =    0;
+   int         x_len       =    0;
+   char       *x_valid     = NULL;
+   int         x_val       =    0;
+   int         x_max       =    1;
+   int         x_multi     [LEN_SHORT] = { 0, 0, 0, 0, 0 };
+   int         x_count     =    1;
+   int         x_digit     =    1;
+   char        x_label     [LEN_SHORT] = "";
+   /*---(default)------------------------*/
+   if (r_max   != NULL)  *r_max = 0;
+   if (r_label != NULL)  strcpy (r_label, "");
+   /*---(defense)------------------------*/
+   --rce;  if (a_spec == NULL)   return rce;
+   x_len = strlen (a_spec);
+   --rce;  if (x_len < 1)        return rce;
+   --rce;  if (x_len > 4)        return rce;
+   /*---(prepare)------------------------*/
+   sprintf (x_label, "%*.*s", x_len, x_len, YSTR_EDOTS);
+   if (r_label != NULL)  strcpy (r_label, x_label);
+   /*---(check negative)-----------------*/
+   --rce;  if (a_val < 0)        return rce;
+   x_val = a_val;
+   /*---(set maximum)--------------------*/
+   x_max = 1;
+   --rce;  for (i = x_len - 1; i >= 0; --i) {
+      /*---(filter seperators)-----------*/
+      if (strchr ("·:/á,.", a_spec [i]) != NULL)  continue;
+      /*---(set charset)-----------------*/
+      switch (a_spec [i]) {
+      case 'l'  : x_valid = YSTR_LOWER;                break;
+      case 'u'  : x_valid = YSTR_UPPER;                break;
+      case 'A'  : x_valid = YSTR_LOWER YSTR_UPPER;     break;
+      case 'ê'  : x_valid = YSTR_GREEK;                break;
+      case '9'  : x_valid = YSTR_NUMBER;               break;
+      case 'v'  : x_valid = YSTR_NUMBER YSTR_UPPER YSTR_GREEK;    break;
+      case '*'  : x_valid = YSTR_NUMBER YSTR_LOWER YSTR_UPPER YSTR_GREEK;    break;
+      default   : return rce;                          break;
+      }
+      /*---(calculate maxes)-------------*/
+      x_multi [i] = x_max;
+      x_count  = strlen (x_valid);
+      x_max *= x_count;
+      /*---(done)------------------------*/
+   }
+   /*---(check fit)----------------------*/
+   --rce;  if (x_max <= 1)       return rce;
+   --rce;  if (x_val >= x_max)   return rce;
+   /*---(build hint)---------------------*/
+   --rce;  for (i = 0; i < x_len; ++i) {
+      /*---(filter seperators)-----------*/
+      if (strchr ("·:/á,.", a_spec [i]) != NULL) {
+         x_label [i] = a_spec [i];
+         continue;
+      }
+      /*---(set charset)-----------------*/
+      switch (a_spec [i]) {
+      case 'l'  : x_valid = YSTR_LOWER;                break;
+      case 'u'  : x_valid = YSTR_UPPER;                break;
+      case 'A'  : x_valid = YSTR_LOWER YSTR_UPPER;     break;
+      case 'ê'  : x_valid = YSTR_GREEK;                break;
+      case '9'  : x_valid = YSTR_NUMBER;               break;
+      case 'v'  : x_valid = YSTR_NUMBER YSTR_UPPER YSTR_GREEK;    break;
+      case '*'  : x_valid = YSTR_NUMBER YSTR_LOWER YSTR_UPPER YSTR_GREEK;    break;
+      default   : return rce;                          break;
+      }
+      /*---(calculate value)-------------*/
+      x_count  = strlen (x_valid);
+      x_digit  = x_val / x_multi [i];
+      if (x_digit > x_count)  return rce;
+      x_label [i] = x_valid [x_digit];
+      x_val -= x_digit * x_multi [i];
+      /*---(done)------------------------*/
+   }
+   /*---(save-back)----------------------*/
+   if (r_max   != NULL)  *r_max = x_max;
+   if (r_label != NULL)  strcpy (r_label, x_label);
+   /*---(complete)-----------------------*/
+   return x_max;
+}
+
+
+
