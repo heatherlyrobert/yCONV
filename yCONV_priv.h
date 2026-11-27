@@ -83,8 +83,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "1.--, production"
 #define     P_VERMINOR  "1.0-, moving from ySTR"
-#define     P_VERNUM    "1.0g"
-#define     P_VERTXT    "ystrlhint ported to yconv_hint, improved, and unit-tested"
+#define     P_VERNUM    "1.0h"
+#define     P_VERTXT    "ported format, count, and uom validation functions; and unit-tested"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -232,9 +232,9 @@ extern const tROMAN S_roman [LEN_DESC];
 /*········´ ´···········debugging·´ ´·········································*/
 char*       yCONV_version           (void);
 /*········´ ´··········validation·´ ´·········································*/
-char        yconv_check_format      (char a_fmt);
-char        yconv_check_count       (char a_cnt);
-char        yconv_check_uom         (char a_uom);
+char        yconv_format_valid      (char a_fmt);
+char        yconv_count_valid       (char a_cnt);
+char        yconv_uom_valid         (char a_uom);
 /*········´ ´················DONE·´ ´·········································*/
 
 

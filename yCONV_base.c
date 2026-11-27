@@ -69,10 +69,10 @@ yCONV_version           (void)
 static void      o___VALIDATION______________o (void) {;}
 
 char
-yconv_check_format      (char a_fmt)
+yconv_format_valid      (char a_fmt)
 {
    char        rce         =  -10;
-   char       *x_valid     = "?··yY·bB·oO·xX·zZ·  rR·tTdD··if·IF,·aA$·sS·cC#·pPeE";
+   char       *x_valid     = "?··yY·bB·oO·xX·zZ·  rR·tTdD··if·IF,·aA$·sS·cC#·pP·eE";
    --rce;  if (a_fmt == 0)           return rce;
    --rce;  if (a_fmt == ' ')         return rce;
    --rce;  if (a_fmt == '·')         return rce;
@@ -81,23 +81,12 @@ yconv_check_format      (char a_fmt)
 }
 
 char
-yconv_check_count       (char a_cnt)
+yconv_count_valid       (char a_cnt)
 {
    char        rce         =  -10;
    --rce;  if (a_cnt < 0)  return rce;
    --rce;  if (a_cnt > 9)  return rce;
    return 0;
-}
-
-char
-yconv_check_uom         (char a_unit)
-{
-   char        rce         =  -10;
-   char        rc          =    0;
-   --rce;  if (a_unit == 0)    return rce;
-   --rce;  if (a_unit == ' ')  return rce;
-   rc = yconv_uoms (a_unit, NULL, NULL, NULL, NULL, NULL);
-   return rc;
 }
 
 

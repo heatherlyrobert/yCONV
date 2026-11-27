@@ -1286,14 +1286,14 @@ yconv_4main          (ullong a_ullong, double a_double, char a_cnt, char a_fmt, 
    DEBUG_YCONV   yLOG_enter   (__FUNCTION__);
    /*---(defense)------------------------*/
    DEBUG_YCONV   yLOG_char    ("a_fmt"     , a_fmt);
-   if (yconv_check_format (a_fmt) < 0) {
+   if (yconv_format_valid (a_fmt) < 0) {
       DEBUG_YCONV   yLOG_note    ("a_fmt illegal");
       ystrlcpy (r_out, "#p/fmt", a_max);
       DEBUG_YCONV   yLOG_exitr   (__FUNCTION__, rce);
       return rce;
    }
    DEBUG_YCONV   yLOG_char    ("a_cnt"   , a_cnt);
-   if (yconv_check_count (a_cnt) < 0) {
+   if (yconv_count_valid (a_cnt) < 0) {
       DEBUG_YCONV   yLOG_note    ("a_cnt illegal");
       ystrlcpy (r_out, "#p/dec", a_max);
       DEBUG_YCONV   yLOG_exitr   (__FUNCTION__, rce);

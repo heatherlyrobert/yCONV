@@ -68,13 +68,13 @@
 
 
 
-/*===[[ yCONV_base.c ]]=============(·3)======================================*/
+/*===[[ yCONV_base.c ]]=============(·4)======================================*/
 /*········´ ´···········debugging·´ ´·········································*/
 char*       yCONV_version           (void);
 /*········´ ´··········validation·´ ´·········································*/
-char        yconv_check_format      (char a_fmt);
-char        yconv_check_count       (char a_cnt);
-char        yconv_check_uom         (char a_uom);
+char        yconv_format_valid      (char a_fmt);
+char        yconv_count_valid       (char a_cnt);
+char        yconv_uom_valid         (char a_uom);
 /*········´ ´················DONE·´ ´·········································*/
 
 

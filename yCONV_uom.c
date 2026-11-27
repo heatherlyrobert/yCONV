@@ -76,6 +76,9 @@ static struct {
 };
 
 
+#define   UOM_VALID     "-YZEPTGMKHD.dcmunpfazy"
+
+
 
 /*====================------------------------------------====================*/
 /*===----                 support for units                            ----===*/
@@ -83,9 +86,24 @@ static struct {
 static void      o___SUPPORT_________________o (void) {;}
 
 char
+yconv_uom_valid         (char a_uom)
+{
+   /*---(locals)-----------+-----------+-*/
+   char        rce         =  -10;
+   char       *p           = NULL;
+   --rce;  if (a_uom == 0)      return rce;
+   --rce;  if (a_uom == ' ')    return rce;
+   --rce;  if (a_uom == '·')    return rce;
+   p = strchr (UOM_VALID, a_uom);
+   --rce;  if (p      == NULL)  return rce;
+   return 0;
+}
+
+char
 yconv__uoms             (char a_dir, char a_uom, double *b_value, char *r_pow, double *r_scale, char r_name [LEN_TERSE], char r_sci [LEN_SHORT], char r_english [LEN_LABEL])
 {
    /*---(locals)-----------+-----------+-*/
+   char        rce         =  -10;
    int         i           =    0;
    char       *x_valid     = "-YZEPTGMKHD.dcmunpfazy";
    /*---(default)------------------------*/
@@ -114,7 +132,7 @@ yconv__uoms             (char a_dir, char a_uom, double *b_value, char *r_pow, d
       /*---(done)------------------------*/
    }
    /*---(complete)-----------------------*/
-   return -1;
+   return rce;
 }
 
 
