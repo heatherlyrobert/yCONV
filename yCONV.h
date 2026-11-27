@@ -146,7 +146,7 @@ char        yconv_4float            (ullong a_ullong, double a_double, char a_cn
 char        yconv_4comma            (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_uom, char a_max, char r_out [LEN_TITLE]);
 char        yconv_4sci              (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_max, char r_out [LEN_TITLE]);
 /*········´ ´·············4driver·´ ´·········································*/
-char        yconv_4main             (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_uom, char a_max, char r_out [LEN_TITLE]);
+char        yconv_4main             (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_uom, char a_max, char r_out [LEN_HUND]);
 char*       yconv_4quick            (double a_double, char a_ali, char a_fmt, char a_cnt, char a_uom, char a_fil, char a_zer, char a_neg, char a_max);
 /*········´ ´················DONE·´ ´·········································*/
 
@@ -156,6 +156,8 @@ char*       yconv_4quick            (double a_double, char a_ali, char a_fmt, ch
 /*········´ ´················leet·´ ´·········································*/
 char        yconv_2leet             (char a_engl [LEN_HUND], char a_max, char r_leet [LEN_HUND]);
 char        yconv_4leet             (char a_leet [LEN_HUND], char a_max, char r_engl [LEN_HUND]);
+/*········´ ´·············general·´ ´·········································*/
+char        yconv_base2base         (char a_src  [LEN_HUND], char a_ofmt, char r_out [LEN_TITLE]);
 /*········´ ´················DONE·´ ´·········································*/
 
 

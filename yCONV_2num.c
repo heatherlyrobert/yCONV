@@ -1213,23 +1213,41 @@ yconv__2type            (char a_src [LEN_HUND], char *r_range)
          return TYPE_FLOAT;
       }
    }
+   /*---(check integer first)------------*/
+   --rce;  if (x_type == '-') {
+      for (i = 0; i < l; ++i) {
+         /*---(filter everywhere sperators)-*/
+         if (strchr ("':á"  , a_src [i]) != NULL)  continue;
+         /*---(check commas)----------------*/
+         if (strchr (YSTR_NUMPLUS, a_src [i]) != NULL)  { x_type = TYPE_INT; continue; }
+         x_type = '-';
+         break;
+      }
+   }
+   /*---(then roman)---------------------*/
+   --rce;  if (x_type == '-') {
+      for (i = 0; i < l; ++i) {
+         if (strchr (YSTR_ROMAN, a_src [i]) != NULL)  { x_type = TYPE_ROMAN; continue; }
+         x_type = '-';
+         break;
+      }
+   }
    /*---(complicated)--------------------*/
-   --rce;  for (i = 0; i < l; ++i) {
-      /*---(filter everywhere sperators)-*/
-      if (strchr ("':á"  , a_src [i]) != NULL)  continue;
-      /*---(check bases)-----------------*/
-      if (strchr (",rzxo", x_type) == NULL && strchr (YSTR_BINARY, a_src [i]) != NULL)  { x_type = TYPE_BIN;   continue; }
-      if (strchr (",rzx" , x_type) == NULL && strchr (YSTR_OCTAL , a_src [i]) != NULL)  { x_type = TYPE_OCT;   continue; }
-      if (strchr (",rz"  , x_type) == NULL && strchr (YSTR_HEXUP , a_src [i]) != NULL)  { x_type = TYPE_HEX;   continue; }
-      if (strchr (",z"   , x_type) == NULL && strchr (YSTR_ROMAN , a_src [i]) != NULL)  { x_type = TYPE_ROMAN; continue; }
-      if (strchr (","    , x_type) == NULL && strchr (YSTR_MONGO , a_src [i]) != NULL)  { x_type = TYPE_MONGO; continue; }
-      /*---(check commas)----------------*/
-      if (strchr (YSTR_NUMPLUS, a_src [i]) != NULL)  { x_type = TYPE_INT; continue; }
-      /*---(trouble)---------------------*/
-      DEBUG_YCONV   yLOG_note    ("found entirely illegal character");
-      yLOG_exitr   (__FUNCTION__, rce);
-      return TYPE_FAIL;
-      /*---(done)------------------------*/
+   --rce;  if (x_type == '-') {
+      for (i = 0; i < l; ++i) {
+         /*---(filter everywhere sperators)-*/
+         if (strchr ("':á"  , a_src [i]) != NULL)  continue;
+         /*---(check commas)----------------*/
+         if (strchr ("oxz"  , x_type) == NULL && strchr (YSTR_BINARY, a_src [i]) != NULL)  { x_type = TYPE_BIN;   continue; }
+         if (strchr ("xz"   , x_type) == NULL && strchr (YSTR_OCTAL , a_src [i]) != NULL)  { x_type = TYPE_OCT;   continue; }
+         if (strchr ("z"    , x_type) == NULL && strchr (YSTR_HEXUP , a_src [i]) != NULL)  { x_type = TYPE_HEX;   continue; }
+         if (strchr (YSTR_MONGO , a_src [i]) != NULL)  { x_type = TYPE_MONGO; continue; }
+         /*---(trouble)---------------------*/
+         DEBUG_YCONV   yLOG_note    ("found entirely illegal character");
+         yLOG_exitr   (__FUNCTION__, rce);
+         return TYPE_FAIL;
+         /*---(done)------------------------*/
+      }
    }
    /*---(save-back)----------------------*/
    if (r_range != NULL) {

@@ -36,6 +36,49 @@
 /*===[[ END GNU GENERAL PUBLIC LICENSE (GPL) WARNING ]]=======================*/
 
 
+/*
+ * --format-code- --binary----  --octal-----  --hex-------  --mongo-----   ----integer-----   ----float-------
+ *   -    none    11010011      131366        a59eba51      k3VLqsLtn      123456789          123456789.0     
+ *   d    dels    1101'0011     131'366       a59e'ba51     k3VL'qsLtn     123,456,789        123,456,789.0   
+ *   s    simple  0b11010011    0o131366      0xa59eba51    0zk3VLqsLtn    +123456789         +123456789.0    
+ *   f    formal  é11010011     ö131366       õa59eba51     ÿk3VLqsLtn     +123,456,789       +123,456,789.0  
+ *   c    clear   b'1101'0011   o'131'366     x'a59e'ba51   z'k3VL'qsLtn   +123,456,789       +123,456,789    
+ *   g    greek   é'1101'0011   ö'131'366     õ'a59e'ba51   ÿ'k3VL'qsLtn   (123,456,789)      (123,456,789.0) 
+ *   :    colon   é:1101:0011   ö:131:366     õ:a59e:ba51   ÿ:k3VL:qsLtn   +123,456,789       +123,456,789.0  
+ *   t    tick    éá1101á0011   öá131á366     õáa59eába51   ÿák3VLáqsLtn   +123,456,789       +123,456,789.0  
+ *   #    tech    éá11·1á··11   öá131á366     õáa59eába51   ÿák3VLáqsLtn   123,456,789·+      123,456,789.0·+   
+ * 
+ *
+ * ystrl4comma         (ullong a_ullong, double a_double, char a_decs, char a_fmt, char a_unit, char a_max, char r_out [LEN_TITLE])
+ *
+ *                                                                      123456789-123456789-123456789
+ *                                                            none      ·········18446744073709551615
+ *                                                            dels      ···18,446,744,073,709,551,615
+ *                                                            simple    ········+18446744073709551615
+ *                                                            formal    ··+18,446,744,073,709,551,615
+ *                                                            greek     ·(18,446,744,073,709,551,615)
+ *                                                 colon,tick,clear     +··18,446,744,073,709,551,615
+ *                                                            tech      ·18,446,744,073,709,551,615·+
+ *
+ *
+ *
+ *        1001110110001010
+ *        1··111·11···1·1·
+ *        ³··³³³·³³···³·³·
+ *        Ï··ÏÏÏ·ÏÏ···Ï·Ï·
+ *
+ *        1001 1101  1000 1010  1001 1101  1000 1010
+ *        1··1 11·1  1··· 1·1·  1··1 11·1  1··· 1·1·
+ *        ³··³ ³³·³  ³··· ³·³·  ³··³ ³³·³  ³··· ³·³·
+ *        ³--³ ³³-³Š³--- ³-³-  ³--³ ³³-³  ³--- ³-³-
+ *        Ï··Ï ÏÏ·Ï  Ï··· Ï·Ï·  Ï··Ï ÏÏ·Ï  Ï··· Ï·Ï·
+ *
+ *       ³··³Œ³³·³³···Œ³·³·³··³Œ³³·³³···Œ³·³·
+ *
+ * 
+ */
+
+
 
 /*====================------------------------------------====================*/
 /*===----                 support for number to string                 ----===*/
@@ -949,120 +992,122 @@ yconv_4float             (ullong a_ullong, double a_double, char a_cnt, char a_f
    return 0;
 }
 
-char         /*-> format hexadecimal numbers to string ----[ petal  [ 2f---- ]*/
-yconv_4comma         (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_uom, char a_max, char r_out [LEN_TITLE])
-{
-   /*---(locals)-----------+-----------+-*/
-   char        rce         =  -10;               /* return code for errors    */
-   char        rc          =    0;
-   int         x_len       =    0;
-   int         i           =    0;               /* iterator -- character     */
-   char        x_temp      [200] = "";
-   char        x_prefix    [200] = "";  /* temp working string            */
-   char        x_suffix    [200] = "";  /* temp working string            */
-   char        x_final     [200] = "";
-   char        x_sign      =    1;
-   double      x_scaled    = 0.0;           /* scaled version                 */
-   char        x_unit      [LEN_SHORT];
-   double      x_round     = 0.0;           /* rounded off value              */
-   long      x_exp       = 1;             /* exponent to round off          */
-   long      x_int       = 0;             /* whole part                     */
-   long      x_frac      = 0;             /* fractional part                */
-   long      x_pct       = 1;             /* fractional part                */
-   /*---(header)-------------------------*/
-   DEBUG_YCONV   yLOG_senter  (__FUNCTION__);
-   /*---(defence)------------------------*/
-   DEBUG_YCONV   yLOG_spoint  (r_out);
-   --rce;  if (r_out == NULL) {
-      DEBUG_YCONV   yLOG_sexitr  (__FUNCTION__, rce);
-      return rce;
-   }
-   ystrlcpy (r_out, YSTR_EMPTY, a_max);
-   DEBUG_YCONV   yLOG_schar   (a_fmt);
-   --rce;  if (strchr ("iIfF,cCaAsS$#pP?", a_fmt) == NULL) {
-      ystrlcpy (r_out, "#p/fmt", a_max);
-      DEBUG_YCONV   yLOG_sexitr  (__FUNCTION__, rce);
-      return rce;
-   }
+char  yconv_4comma   (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_uom, char a_max, char r_out [LEN_TITLE])  { return yconv_4float (a_ullong, a_double, a_cnt, a_fmt, a_uom, a_max, r_out); }
 
-   if (a_double < 0.0)    x_sign  = -1;
-   if (a_fmt == '?')   a_fmt   = 'i';
-   if (a_fmt == 'i')   a_cnt  =  0;
-   /*---(scale)--------------------------*/
-   x_scaled = a_double;
-   rc = yconv_4uom (a_uom, &x_scaled);
-   --rce;  if (rc < 0) {
-      ystrlcpy (r_out, "#p/uni", a_max);
-      DEBUG_YCONV   yLOG_sexitr  (__FUNCTION__, rce);
-      return rce;
-   }
-   if      (a_uom == '-')   strcpy  (x_unit, "");
-   else if (a_uom == '.')   sprintf (x_unit, "%c", G_CHAR_BIGDOT);
-   else                      sprintf (x_unit, "%c", a_uom);
-   /*---(parse out)----------------------*/
-   for (i = 0; i < a_cnt; ++i)  x_exp *= 10;
-   x_round  = round (x_scaled * x_sign * x_exp * x_pct);
-   x_int    = x_round / x_exp;
-   x_frac   = x_round - (x_int * x_exp);
-   /*---(assemble prefix)----------------*/
-   if (tolower (a_fmt) == '$')  strcat (x_final, "$");
-   if (x_sign < 0) {
-      if (strchr ("iIf,cspP", tolower (a_fmt)) != NULL)  strcat (x_final, "-");
-      if (strchr ("a$"      , tolower (a_fmt)) != NULL)  strcat (x_final, "(");
-   } else {
-      if (strchr ("s"       , tolower (a_fmt)) != NULL)  strcat (x_final, "+");
-   }
-   DEBUG_YCONV  yLOG_snote    (x_final);
-   /*---(format integer part)------------*/
-   sprintf (x_temp, "%lld", x_int);
-   x_len = strlen (x_temp);
-   if (strchr ("iIfF", a_fmt) == NULL)  yconv__space_ints (3, ',', x_temp);
-   strcat (x_final, x_temp);
-   DEBUG_YCONV  yLOG_snote    (x_temp);
-   /*---(decimal part)-------------------*/
-   if (strchr ("iI", a_fmt) == 0 && a_cnt > 0) {
-      sprintf (x_temp, "%0*lld", a_cnt, x_frac);
-      if (strchr ("ACS#F", a_fmt) != NULL)  yconv__space_decs (3, '\'', x_temp);
-      strcat  (x_final, ".");
-      strcat  (x_final, x_temp);
-   }
-   DEBUG_YCONV  yLOG_snote    (x_temp);
-   /*---(assemble suffix)----------------*/
-   strcat (x_final, x_unit);
-   if (x_sign < 0) {
-      switch (a_fmt) {
-      case 'a' : case 'A' : case '$' : strcat (x_final, ")");  break;
-      case 'p' :                       strcat (x_final, ")");  break;
-      case 'P' :                       strcat (x_final, "´");  break;
-      case '#' :                       strcat (x_final, " -"); break;
-      }
-   } else {
-      switch (a_fmt) {
-      case 'a' : case 'A' : case '$' : strcat (x_final, "_");  break;
-      case 'p' :                       strcat (x_final, ")");  break;
-      case 'P' :                       strcat (x_final, "´");  break;
-      case '#' :                       strcat (x_final, " +"); break;
-      }
-   }
-   if (a_fmt == 'I' && a_cnt > 0) {
-      for (i = 0; i <= a_cnt; ++i)  strcat (x_final, " ");
-   }
-   DEBUG_YCONV  yLOG_snote    (x_final);
-   /*---(create)---------------*/
-   x_len = strlen (x_final);
-   DEBUG_YCONV   yLOG_sint    (a_max);
-   DEBUG_YCONV   yLOG_sint    (x_len);
-   --rce;  if (x_len > a_max) {
-      ystrlcpy (r_out, "#p/max", a_max);
-      DEBUG_YCONV   yLOG_snote   ("too long");
-      DEBUG_YCONV   yLOG_sexitr  (__FUNCTION__, rce);
-      return rce;
-   }
-   ystrlcpy  (r_out, x_final, a_max);
-   /*---(complete)-----------------------*/
-   DEBUG_YCONV   yLOG_sexit   (__FUNCTION__);
-   return 0;
-}
+/*> char         /+-> format hexadecimal numbers to string ----[ petal  [ 2f---- ]+/                                                  <* 
+ *> yconv_4comma         (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_uom, char a_max, char r_out [LEN_TITLE])   <* 
+ *> {                                                                                                                                 <* 
+ *>    /+---(locals)-----------+-----------+-+/                                                                                       <* 
+ *>    char        rce         =  -10;               /+ return code for errors    +/                                                  <* 
+ *>    char        rc          =    0;                                                                                                <* 
+ *>    int         x_len       =    0;                                                                                                <* 
+ *>    int         i           =    0;               /+ iterator -- character     +/                                                  <* 
+ *>    char        x_temp      [200] = "";                                                                                            <* 
+ *>    char        x_prefix    [200] = "";  /+ temp working string            +/                                                      <* 
+ *>    char        x_suffix    [200] = "";  /+ temp working string            +/                                                      <* 
+ *>    char        x_final     [200] = "";                                                                                            <* 
+ *>    char        x_sign      =    1;                                                                                                <* 
+ *>    double      x_scaled    = 0.0;           /+ scaled version                 +/                                                  <* 
+ *>    char        x_unit      [LEN_SHORT];                                                                                           <* 
+ *>    double      x_round     = 0.0;           /+ rounded off value              +/                                                  <* 
+ *>    long      x_exp       = 1;             /+ exponent to round off          +/                                                    <* 
+ *>    long      x_int       = 0;             /+ whole part                     +/                                                    <* 
+ *>    long      x_frac      = 0;             /+ fractional part                +/                                                    <* 
+ *>    long      x_pct       = 1;             /+ fractional part                +/                                                    <* 
+ *>    /+---(header)-------------------------+/                                                                                       <* 
+ *>    DEBUG_YCONV   yLOG_senter  (__FUNCTION__);                                                                                     <* 
+ *>    /+---(defence)------------------------+/                                                                                       <* 
+ *>    DEBUG_YCONV   yLOG_spoint  (r_out);                                                                                            <* 
+ *>    --rce;  if (r_out == NULL) {                                                                                                   <* 
+ *>       DEBUG_YCONV   yLOG_sexitr  (__FUNCTION__, rce);                                                                             <* 
+ *>       return rce;                                                                                                                 <* 
+ *>    }                                                                                                                              <* 
+ *>    ystrlcpy (r_out, YSTR_EMPTY, a_max);                                                                                           <* 
+ *>    DEBUG_YCONV   yLOG_schar   (a_fmt);                                                                                            <* 
+ *>    --rce;  if (strchr ("iIfF,cCaAsS$#pP?", a_fmt) == NULL) {                                                                      <* 
+ *>       ystrlcpy (r_out, "#p/fmt", a_max);                                                                                          <* 
+ *>       DEBUG_YCONV   yLOG_sexitr  (__FUNCTION__, rce);                                                                             <* 
+ *>       return rce;                                                                                                                 <* 
+ *>    }                                                                                                                              <* 
+ *>                                                                                                                                   <* 
+ *>    if (a_double < 0.0)    x_sign  = -1;                                                                                           <* 
+ *>    if (a_fmt == '?')   a_fmt   = 'i';                                                                                             <* 
+ *>    if (a_fmt == 'i')   a_cnt  =  0;                                                                                               <* 
+ *>    /+---(scale)--------------------------+/                                                                                       <* 
+ *>    x_scaled = a_double;                                                                                                           <* 
+ *>    rc = yconv_4uom (a_uom, &x_scaled);                                                                                            <* 
+ *>    --rce;  if (rc < 0) {                                                                                                          <* 
+ *>       ystrlcpy (r_out, "#p/uni", a_max);                                                                                          <* 
+ *>       DEBUG_YCONV   yLOG_sexitr  (__FUNCTION__, rce);                                                                             <* 
+ *>       return rce;                                                                                                                 <* 
+ *>    }                                                                                                                              <* 
+ *>    if      (a_uom == '-')   strcpy  (x_unit, "");                                                                                 <* 
+ *>    else if (a_uom == '.')   sprintf (x_unit, "%c", G_CHAR_BIGDOT);                                                                <* 
+ *>    else                      sprintf (x_unit, "%c", a_uom);                                                                       <* 
+ *>    /+---(parse out)----------------------+/                                                                                       <* 
+ *>    for (i = 0; i < a_cnt; ++i)  x_exp *= 10;                                                                                      <* 
+ *>    x_round  = round (x_scaled * x_sign * x_exp * x_pct);                                                                          <* 
+ *>    x_int    = x_round / x_exp;                                                                                                    <* 
+ *>    x_frac   = x_round - (x_int * x_exp);                                                                                          <* 
+ *>    /+---(assemble prefix)----------------+/                                                                                       <* 
+ *>    if (tolower (a_fmt) == '$')  strcat (x_final, "$");                                                                            <* 
+ *>    if (x_sign < 0) {                                                                                                              <* 
+ *>       if (strchr ("iIf,cspP", tolower (a_fmt)) != NULL)  strcat (x_final, "-");                                                   <* 
+ *>       if (strchr ("a$"      , tolower (a_fmt)) != NULL)  strcat (x_final, "(");                                                   <* 
+ *>    } else {                                                                                                                       <* 
+ *>       if (strchr ("s"       , tolower (a_fmt)) != NULL)  strcat (x_final, "+");                                                   <* 
+ *>    }                                                                                                                              <* 
+ *>    DEBUG_YCONV  yLOG_snote    (x_final);                                                                                          <* 
+ *>    /+---(format integer part)------------+/                                                                                       <* 
+ *>    sprintf (x_temp, "%lld", x_int);                                                                                               <* 
+ *>    x_len = strlen (x_temp);                                                                                                       <* 
+ *>    if (strchr ("iIfF", a_fmt) == NULL)  yconv__space_ints (3, ',', x_temp);                                                       <* 
+ *>    strcat (x_final, x_temp);                                                                                                      <* 
+ *>    DEBUG_YCONV  yLOG_snote    (x_temp);                                                                                           <* 
+ *>    /+---(decimal part)-------------------+/                                                                                       <* 
+ *>    if (strchr ("iI", a_fmt) == 0 && a_cnt > 0) {                                                                                  <* 
+ *>       sprintf (x_temp, "%0*lld", a_cnt, x_frac);                                                                                  <* 
+ *>       if (strchr ("ACS#F", a_fmt) != NULL)  yconv__space_decs (3, '\'', x_temp);                                                  <* 
+ *>       strcat  (x_final, ".");                                                                                                     <* 
+ *>       strcat  (x_final, x_temp);                                                                                                  <* 
+ *>    }                                                                                                                              <* 
+ *>    DEBUG_YCONV  yLOG_snote    (x_temp);                                                                                           <* 
+ *>    /+---(assemble suffix)----------------+/                                                                                       <* 
+ *>    strcat (x_final, x_unit);                                                                                                      <* 
+ *>    if (x_sign < 0) {                                                                                                              <* 
+ *>       switch (a_fmt) {                                                                                                            <* 
+ *>       case 'a' : case 'A' : case '$' : strcat (x_final, ")");  break;                                                             <* 
+ *>       case 'p' :                       strcat (x_final, ")");  break;                                                             <* 
+ *>       case 'P' :                       strcat (x_final, "´");  break;                                                             <* 
+ *>       case '#' :                       strcat (x_final, " -"); break;                                                             <* 
+ *>       }                                                                                                                           <* 
+ *>    } else {                                                                                                                       <* 
+ *>       switch (a_fmt) {                                                                                                            <* 
+ *>       case 'a' : case 'A' : case '$' : strcat (x_final, "_");  break;                                                             <* 
+ *>       case 'p' :                       strcat (x_final, ")");  break;                                                             <* 
+ *>       case 'P' :                       strcat (x_final, "´");  break;                                                             <* 
+ *>       case '#' :                       strcat (x_final, " +"); break;                                                             <* 
+ *>       }                                                                                                                           <* 
+ *>    }                                                                                                                              <* 
+ *>    if (a_fmt == 'I' && a_cnt > 0) {                                                                                               <* 
+ *>       for (i = 0; i <= a_cnt; ++i)  strcat (x_final, " ");                                                                        <* 
+ *>    }                                                                                                                              <* 
+ *>    DEBUG_YCONV  yLOG_snote    (x_final);                                                                                          <* 
+ *>    /+---(create)---------------+/                                                                                                 <* 
+ *>    x_len = strlen (x_final);                                                                                                      <* 
+ *>    DEBUG_YCONV   yLOG_sint    (a_max);                                                                                            <* 
+ *>    DEBUG_YCONV   yLOG_sint    (x_len);                                                                                            <* 
+ *>    --rce;  if (x_len > a_max) {                                                                                                   <* 
+ *>       ystrlcpy (r_out, "#p/max", a_max);                                                                                          <* 
+ *>       DEBUG_YCONV   yLOG_snote   ("too long");                                                                                    <* 
+ *>       DEBUG_YCONV   yLOG_sexitr  (__FUNCTION__, rce);                                                                             <* 
+ *>       return rce;                                                                                                                 <* 
+ *>    }                                                                                                                              <* 
+ *>    ystrlcpy  (r_out, x_final, a_max);                                                                                             <* 
+ *>    /+---(complete)-----------------------+/                                                                                       <* 
+ *>    DEBUG_YCONV   yLOG_sexit   (__FUNCTION__);                                                                                     <* 
+ *>    return 0;                                                                                                                      <* 
+ *> }                                                                                                                                 <*/
 
 char         /*-> format hexadecimal numbers to string ----[ petal  [ 2f---- ]*/
 yconv_4sci           (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_max, char r_out [LEN_TITLE])
@@ -1277,11 +1322,12 @@ yconv_4time          (ullong a_ullong, double a_double, char a_cnt, char a_fmt, 
 static void      o___4DRIVER_________________o (void) {;}
 
 char
-yconv_4main          (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_uom, char a_max, char r_out [LEN_TITLE])
+yconv_4main          (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_uom, char a_max, char r_out [LEN_HUND])
 {
    /*---(locals)-----------+-----+-----+-*/
    char        rce         =  -10;
    char        rc          =    0;
+   char        x_fmt       =  '-';
    /*---(header)-------------------------*/
    DEBUG_YCONV   yLOG_enter   (__FUNCTION__);
    /*---(defense)------------------------*/
@@ -1307,19 +1353,23 @@ yconv_4main          (ullong a_ullong, double a_double, char a_cnt, char a_fmt, 
       break;
    case 'b' : case 'B' :
       DEBUG_YCONV   yLOG_note    ("selected binary");
-      rc = yconv_4bin   (a_ullong, a_double, a_cnt, a_fmt, a_max, r_out);
+      if (a_fmt == 'b')  x_fmt = 'c'; else x_fmt = 'g';
+      rc = yconv_4bin   (a_ullong, a_double, a_cnt, x_fmt, a_max, r_out);
       break;
    case 'o' : case 'O' :
       DEBUG_YCONV   yLOG_note    ("selected octal");
-      rc = yconv_4oct   (a_ullong, a_double, a_cnt, a_fmt, a_max, r_out);
+      if (a_fmt == 'o')  x_fmt = 'c'; else x_fmt = 'g';
+      rc = yconv_4oct   (a_ullong, a_double, a_cnt, x_fmt, a_max, r_out);
       break;
    case 'x' : case 'X' :
       DEBUG_YCONV   yLOG_note    ("selected hexadecimal");
-      rc = yconv_4hex   (a_ullong, a_double, a_cnt, a_fmt, a_max, r_out);
+      if (a_fmt == 'x')  x_fmt = 'c'; else x_fmt = 'g';
+      rc = yconv_4hex   (a_ullong, a_double, a_cnt, x_fmt, a_max, r_out);
       break;
    case 'z' : case 'Z' :
       DEBUG_YCONV   yLOG_note    ("selected base64/mongo");
-      rc = yconv_4mongo (a_ullong, a_double, a_cnt, a_fmt, a_max, r_out);
+      if (a_fmt == 'z')  x_fmt = 'c'; else x_fmt = 'g';
+      rc = yconv_4mongo (a_ullong, a_double, a_cnt, x_fmt, a_max, r_out);
       break;
    case 'e' : case 'E' :
       DEBUG_YCONV   yLOG_note    ("selected scientific notation");
@@ -1335,7 +1385,7 @@ yconv_4main          (ullong a_ullong, double a_double, char a_cnt, char a_fmt, 
       break;
    default :
       DEBUG_YCONV   yLOG_note    ("selected comma");
-      rc = yconv_4comma (a_ullong, a_double, a_cnt, a_fmt, a_uom, a_max, r_out);
+      rc = yconv_4float (a_ullong, a_double, a_cnt, a_fmt, a_uom, a_max, r_out);
       break;
    }
    DEBUG_YCONV   yLOG_value   ("rc"        , rc);

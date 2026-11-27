@@ -83,8 +83,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "1.--, production"
 #define     P_VERMINOR  "1.0-, moving from ySTR"
-#define     P_VERNUM    "1.0i"
-#define     P_VERTXT    "updated yconv__2type and yconv_format_valid to return value range indicator"
+#define     P_VERNUM    "1.0j"
+#define     P_VERTXT    "altered yconv__2type to preference floats more ;) added yconv_base2base !!!"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
@@ -318,7 +318,7 @@ char        yconv_4comma            (ullong a_ullong, double a_double, char a_cn
 char        yconv_4sci              (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_max, char r_out [LEN_TITLE]);
 char        yconv_4time             (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_max, char r_out [LEN_TITLE]);
 /*········´ ´·············4driver·´ ´·········································*/
-char        yconv_4main             (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_unit, char a_max, char r_out [LEN_TITLE]);
+char        yconv_4main             (ullong a_ullong, double a_double, char a_cnt, char a_fmt, char a_unit, char a_max, char r_out [LEN_HUND]);
 char*       yconv_4quick            (double a_double, char a_ali, char a_fmt, char a_cnt, char a_uom, char a_fil, char a_zer, char a_neg, char a_max);
 /*········´ ´················DONE·´ ´·········································*/
 
@@ -329,7 +329,7 @@ char*       yconv_4quick            (double a_double, char a_ali, char a_fmt, ch
 char        yconv_2leet             (char a_engl [LEN_HUND], char a_max, char r_leet [LEN_HUND]);
 char        yconv_4leet             (char a_leet [LEN_HUND], char a_max, char r_engl [LEN_HUND]);
 /*········´ ´·············general·´ ´·········································*/
-char        yconv_base2base         (char a_src  [LEN_HUND], char a_fmt, char r_out [LEN_TITLE]);
+char        yconv_base2base         (char a_src  [LEN_HUND], char a_ofmt, char r_out [LEN_TITLE]);
 /*········´ ´················DONE·´ ´·········································*/
 
 
