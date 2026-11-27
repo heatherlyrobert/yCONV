@@ -83,8 +83,8 @@
 /*········· ··········· ´·····························´········································*/
 #define     P_VERMAJOR  "1.--, production"
 #define     P_VERMINOR  "1.0-, moving from ySTR"
-#define     P_VERNUM    "1.0j"
-#define     P_VERTXT    "altered yconv__2type to preference floats more ;) added yconv_base2base !!!"
+#define     P_VERNUM    "1.0k"
+#define     P_VERTXT    "yconv_4sci ported, rebuilt, and unit-tested"
 /*········· ··········· ´·····························´········································*/
 #define     P_PRIORITY  "direct, simple, brief, vigorous, and lucid (h.w. fowler)"
 #define     P_PRINCIPAL "[grow a set] and build your wings on the way down (r. bradbury)"
