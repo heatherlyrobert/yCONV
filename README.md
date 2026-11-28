@@ -1,2 +1,2 @@
 # yCONV
-string numeric conversion
+conversion to-and-from human-consumable number formats
